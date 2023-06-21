@@ -42,6 +42,16 @@ mod Shoot {
     use array::ArrayTrait;
     use traits::Into;
     use dojo_shooter::components::Position;
-    fn execute(ctx: Context) { // Calculate if the shot hit a zombie
+
+    struct Slope {
+        x: u32,
+        y: u32,
+    }
+
+    fn execute(ctx: Context, slope: Slope) { // Calculate if the shot hit a zombie
+    // Gets the slope of the bullet trajectory
+    // Compare the slope of zombies to the bullet trajectory (+- range for simluating hitbox)
+    // Loop through the array and stop at first contact
+
     }
 }
