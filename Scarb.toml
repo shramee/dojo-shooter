@@ -1,5 +1,5 @@
 [package]
-name = "dojo_examples"
+name = "dojo_shooter"
 version = "0.1.0"
 cairo-version = "1.1.0"
 
