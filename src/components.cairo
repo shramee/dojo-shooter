@@ -11,26 +11,28 @@ const play_area: u32 = 1000;
 // Based on the slope
 #[derive(Component, Copy, Drop, Serde)]
 struct QuadTL {
-    slope: u128, 
+    slope: u32, // Slope is one-ten thousandth  
 }
 
 #[derive(Component, Copy, Drop, Serde)]
 struct QuadTR {
-    slope: u128, 
+    slope: u32, // Slope is one-ten thousandth  
 }
 
 #[derive(Component, Copy, Drop, Serde)]
 struct QuadBR {
-    slope: u128, 
+    slope: u32, // Slope is one-ten thousandth  
 }
 
 #[derive(Component, Copy, Drop, Serde)]
 struct QuadBL {
-    slope: u128, 
+    slope: u32, // Slope is one-ten thousandth  
 }
 
 #[derive(Component, Copy, Drop, Serde)]
-type Distance = u32;
+struct Zombie {
+    distance: u32, 
+}
 
 // Keeps game score
 #[derive(Component, Copy, Drop, Serde)]
