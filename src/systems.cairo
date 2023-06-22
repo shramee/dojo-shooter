@@ -22,18 +22,15 @@ mod SpawnPlayer {
 mod SpawnDummyZombies {
     use array::ArrayTrait;
     use traits::Into;
-    use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL, Zombie};
+    // use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL};
+    use dojo_shooter::components::{Zombie};
 
     fn execute(ctx: Context) {
         // Spawn zombies
-        let score = commands::<Zombie,
-        QuadTL>::set_entity(1.into(), (Zombie { distance: 500 }, QuadTL { slope: 20000 }));
-        let score = commands::<Zombie,
-        QuadTR>::set_entity(2.into(), (Zombie { distance: 700 }, QuadTR { slope: 3000 }));
-        let score = commands::<Zombie,
-        QuadBR>::set_entity(3.into(), (Zombie { distance: 400 }, QuadBR { slope: 240 }));
-        let score = commands::<Zombie,
-        QuadBL>::set_entity(4.into(), (Zombie { distance: 750 }, QuadBL { slope: 70000 }));
+        let score = commands::set_entity(1.into(), (Zombie { x: 500, y: 400 }));
+        let score = commands::set_entity(2.into(), (Zombie { x: 700, y: 500 }));
+        let score = commands::set_entity(3.into(), (Zombie { x: 400, y: 350 }));
+        let score = commands::set_entity(4.into(), (Zombie { x: 750, y: 200 }));
     }
 }
 
@@ -49,7 +46,8 @@ mod MoveZombies {
 mod Shoot {
     use array::ArrayTrait;
     use traits::Into;
-    use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL, };
+    // use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL, };
+    use dojo_shooter::components::{Zombie};
 
     #[derive(Copy, Drop, Serde)]
     enum Quadrant {
