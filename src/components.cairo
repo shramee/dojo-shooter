@@ -1,14 +1,36 @@
 use array::ArrayTrait;
 
-const zombies_speed: u32 = 2;
+const zombie_speed: u32 = 2;
+const zombie_width: u32 = 30;
 
-// Position of zombies
-// Updated to go towards the center on every update
+const play_area: u32 = 1000;
+
+// Quadrants
+// These are structured so that Zombies can be queried by quadrant
+// And shoot system can find the zombies shot
+// Based on the slope
 #[derive(Component, Copy, Drop, Serde)]
-struct Position {
-    x: u32,
-    y: u32
+struct QuadTL {
+    slope: u128, 
 }
+
+#[derive(Component, Copy, Drop, Serde)]
+struct QuadTR {
+    slope: u128, 
+}
+
+#[derive(Component, Copy, Drop, Serde)]
+struct QuadBR {
+    slope: u128, 
+}
+
+#[derive(Component, Copy, Drop, Serde)]
+struct QuadBL {
+    slope: u128, 
+}
+
+#[derive(Component, Copy, Drop, Serde)]
+type Distance = u32;
 
 // Keeps game score
 #[derive(Component, Copy, Drop, Serde)]
