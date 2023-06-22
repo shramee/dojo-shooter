@@ -27,21 +27,13 @@ mod SpawnDummyZombies {
     fn execute(ctx: Context) {
         // Spawn zombies
         let score = commands::<Zombie,
-        QuadTL>::entity(
-            ctx.caller_account.into(), (Zombie { distance: 500 }, QuadTL { slope: 20000 })
-        );
+        QuadTL>::set_entity(1.into(), (Zombie { distance: 500 }, QuadTL { slope: 20000 }));
         let score = commands::<Zombie,
-        QuadTR>::entity(
-            ctx.caller_account.into(), (Zombie { distance: 700 }, QuadTR { slope: 3000 })
-        );
+        QuadTR>::set_entity(2.into(), (Zombie { distance: 700 }, QuadTR { slope: 3000 }));
         let score = commands::<Zombie,
-        QuadBR>::entity(
-            ctx.caller_account.into(), (Zombie { distance: 400 }, QuadBR { slope: 240 })
-        );
+        QuadBR>::set_entity(3.into(), (Zombie { distance: 400 }, QuadBR { slope: 240 }));
         let score = commands::<Zombie,
-        QuadBL>::entity(
-            ctx.caller_account.into(), (Zombie { distance: 750 }, QuadBL { slope: 70000 })
-        );
+        QuadBL>::set_entity(4.into(), (Zombie { distance: 750 }, QuadBL { slope: 70000 }));
     }
 }
 

@@ -1,5 +1,6 @@
 use core::array::SpanTrait;
-use core::traits::Into;
+use core::traits::{Into, TryInto};
+use core::option::OptionTrait;
 use array::ArrayTrait;
 use dojo_core::auth::systems::{Route, RouteTrait};
 use dojo_core::interfaces::{IWorldDispatcherTrait, IWorldDispatcher};
@@ -34,7 +35,7 @@ fn setup_world() -> IWorldDispatcher {
 
     let mut systems = array::ArrayTrait::new();
     systems.append('SpawnPlayer');
-    systems.append('SpawnZombies');
+    systems.append('SpawnDummyZombies');
     systems.append('MoveZombies');
     systems.append('Shoot');
 
@@ -47,19 +48,23 @@ fn world_exec(world: IWorldDispatcher, system: felt252) {
     let spawn_call_data = array::ArrayTrait::new();
     world.execute(system, spawn_call_data.span());
 }
-// #[test]
-// #[available_gas(30000000)]
-// fn test_player_spawn() {
-//     let world = setup_world();
 
-//     world_exec(world, 'SpawnPlayer');
+#[test]
+#[available_gas(30000000)]
+fn test_dummy_zombie_spawn() {
+    let world = setup_world();
 
-//     let player = world.entity('player', 0.into(), 0, 0);
-//     assert(player.len() > 0, 'spawn: No data found');
-//     // assert(*position[0] != 0, 'pos1: x is wrong');
-//     // assert(*position[1] != 0, 'pos1: y is wrong');
-// }
+    world_exec(world, 'SpawnDummyZombies');
 
+    let zombie: u32 = (*world.entity('Zombie', 1.into(), 0, 0)[0]).try_into().unwrap();
+    assert(zombie > 0, 'spawn: No data found');
+    zombie.print();
+
+    let slope: u32 = (*world.entity('QuadTL', 1.into(), 0, 0)[0]).try_into().unwrap();
+    assert(slope > 0, 'spawn: No data found');
+// assert(*position[0] != 0, 'pos1: x is wrong');
+// assert(*position[1] != 0, 'pos1: y is wrong');
+}
 // #[test]
 // #[available_gas(30000000)]
 // fn test_physics_update() {

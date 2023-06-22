@@ -11,22 +11,22 @@ const play_area: u32 = 1000;
 // Based on the slope
 #[derive(Component, Copy, Drop, Serde)]
 struct QuadTL {
-    slope: u32, // Slope is one-ten thousandth  
+    x: u32, // Slope is one-ten thousandth    
 }
 
 #[derive(Component, Copy, Drop, Serde)]
 struct QuadTR {
-    slope: u32, // Slope is one-ten thousandth  
+    x: u32, // Slope is one-ten thousandth    
 }
 
 #[derive(Component, Copy, Drop, Serde)]
 struct QuadBR {
-    slope: u32, // Slope is one-ten thousandth  
+    x: u32, // Slope is one-ten thousandth    
 }
 
 #[derive(Component, Copy, Drop, Serde)]
 struct QuadBL {
-    slope: u32, // Slope is one-ten thousandth  
+    x: u32, // Slope is one-ten thousandth    
 }
 
 #[derive(Component, Copy, Drop, Serde)]
