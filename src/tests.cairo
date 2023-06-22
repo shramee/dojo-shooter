@@ -4,26 +4,27 @@ use array::ArrayTrait;
 use dojo_core::auth::systems::{Route, RouteTrait};
 use dojo_core::interfaces::{IWorldDispatcherTrait, IWorldDispatcher};
 use dojo_core::test_utils::spawn_test_world;
-use components::{
-    QuadTL, QuadTR, QuadBL, QuadBR, Score, Distance
+use dojo_shooter::components::{
+    QuadTLComponent, QuadTRComponent, QuadBLComponent, QuadBRComponent, ScoreComponent,
+    ZombieComponent
 };
-use systems::{SpawnPlayer, SpawnZombies, MoveZombies, Shoot};
+use dojo_shooter::systems::{SpawnPlayer, SpawnDummyZombies, MoveZombies, Shoot};
 use debug::PrintTrait;
 
 fn setup_world() -> IWorldDispatcher {
     let caller = starknet::contract_address_const::<0x0>();
     // components
     let mut components = array::ArrayTrait::new();
-    components.append(QuadTL::TEST_CLASS_HASH);
-    components.append(QuadTR::TEST_CLASS_HASH);
-    components.append(QuadBL::TEST_CLASS_HASH);
-    components.append(QuadBR::TEST_CLASS_HASH);
-    components.append(Score::TEST_CLASS_HASH);
-    components.append(Distance::TEST_CLASS_HASH);
+    components.append(QuadTLComponent::TEST_CLASS_HASH);
+    components.append(QuadTRComponent::TEST_CLASS_HASH);
+    components.append(QuadBLComponent::TEST_CLASS_HASH);
+    components.append(QuadBRComponent::TEST_CLASS_HASH);
+    components.append(ScoreComponent::TEST_CLASS_HASH);
+    components.append(ZombieComponent::TEST_CLASS_HASH);
     // systems
     let mut systems = array::ArrayTrait::new();
     systems.append(SpawnPlayer::TEST_CLASS_HASH);
-    systems.append(SpawnZombies::TEST_CLASS_HASH);
+    systems.append(SpawnDummyZombies::TEST_CLASS_HASH);
     systems.append(MoveZombies::TEST_CLASS_HASH);
     systems.append(Shoot::TEST_CLASS_HASH);
     // routes
@@ -46,7 +47,6 @@ fn world_exec(world: IWorldDispatcher, system: felt252) {
     let spawn_call_data = array::ArrayTrait::new();
     world.execute(system, spawn_call_data.span());
 }
-
 // #[test]
 // #[available_gas(30000000)]
 // fn test_player_spawn() {
@@ -76,3 +76,5 @@ fn world_exec(world: IWorldDispatcher, system: felt252) {
 //     assert(*pos[0] == val_from_2xpc(106).into(), 'pos3: x is wrong');
 //     assert(*pos[1] == val_from_2xpc(104).into(), 'pos3: y is wrong');
 // }
+
+
