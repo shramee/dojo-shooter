@@ -1,0 +1,57 @@
+
+Migration account: 0x6f62894bfd81d2e396ce266b2ad0f21e0668d604e5bb1077337b6d570a54aea
+
+[1] 🌎 Building World state....
+  > No remote World found
+[2] 🧰 Evaluating Worlds diff....
+  > Total diffs found: 20
+[3] 📦 Preparing for migration....
+  > Total items to be migrated (20): New 20 Update 0
+  
+# Executor
+  > contract address: 0x13c7a36b4f70191f6f17b407fcd7cc1b5b7d6488e3677855c7c51852dbbda96
+# World
+  > contract address: 0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8
+# Components (4)
+Zombie
+  > class hash: 0x61594146a2cfaf19727c6a98735831f6ce53b8f91fa470d28ced0822646941d
+Score
+  > class hash: 0x783f191e4fb1fccef81d64469d5d1550b07888bc8d2dc915fc23da2406ac33a
+AuthStatus
+  > class hash: 0x3e0b3ffb3e7cd8a661a7ac6b935bad3de651462ea1fb005cd4fff6550ac5337
+AuthRole
+  > class hash: 0x2b61fb54b7be43094bca77ffe3c7da3d1aa1d8ca5ff3aef303d0672cce3c555
+# Systems (14)
+SpawnPlayer
+  > class hash: 0x541a6323d95e4496354262e6f1b04d24e4f484f1a1f053cfc79613cb3fb14b5
+SpawnDummyZombies
+  > class hash: 0x26da5281d02f8dc7bb517a846255d8bb6df95b83d373e945e5abc3d26487520
+MoveZombies
+  > class hash: 0x51632b01aad7894f34da08c6d005e39de567b0db38947408d403589ae3dfb35
+Shoot
+  > class hash: 0x686cf3265974a66c4fc24c6bc71d3ddbc97ff3654e77630f78357a569c14502
+RouteAuth
+  > class hash: 0x328155f2126a5ddbfaeaadd84b0ae2aade22c8e764c981bdf66ed593b5f611c
+IsAccountAdmin
+  > class hash: 0xa1971b109c62b8c664bb6d7770d10a279a13c65c605831ab2971699995ade8
+IsAuthorized
+  > class hash: 0x71154d247157ff6b95e700130779ae2ff0d2ded5d1e854612c96b6df71bb650
+GrantAuthRole
+  > class hash: 0x6c055a55217d1adeb0b4061a533eb9e4d0705c6b5cbc59da4b841b3a195ab85
+GrantScopedAuthRole
+  > class hash: 0x2c854482f2c3db0b59aa597ae21fd47a65c383badb2490780cb72731883238
+GrantResource
+  > class hash: 0x3c0afbab7b4e99eb3fc7d06afadf0d0c1b0754a5458d012c87a732586fb39cc
+RevokeAuthRole
+  > class hash: 0x333e5278b473877e1fcb2c590c9c540bc77e8db28c9402b127da8658a60976e
+RevokeScopedAuthRole
+  > class hash: 0x287979f15e7d95b97b4fd5a4c6ee44d7902e695e2017fc71a54ba696f6df06f
+RevokeResource
+  > class hash: 0x6f6068fccc50d14dc65a34e3b3372c40ba66e27570c264f3d44ec1989d3bdf5
+LibraryCall
+  > class hash: 0x912b21a6d10657808535a4f7ef5f3cbbb594df8082925b9694159ff0dab2f
+
+Configuration:
+  > Admin role for account 0x6f62894bfd81d2e396ce266b2ad0f21e0668d604e5bb1077337b6d570a54aea
+
+🎉 Successfully migrated World at address 0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8
