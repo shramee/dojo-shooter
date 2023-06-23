@@ -1,8 +1,7 @@
-use core::array::SpanTrait;
-use core::traits::{Into, TryInto};
-use core::option::OptionTrait;
+use array::{ArrayTrait, SpanTrait};
+use traits::{Into, TryInto};
+use option::OptionTrait;
 use starknet::testing::set_caller_address;
-use array::ArrayTrait;
 use dojo_core::auth::systems::{Route, RouteTrait};
 use dojo_core::interfaces::{IWorldDispatcherTrait, IWorldDispatcher};
 use dojo_core::test_utils::spawn_test_world;

@@ -1,5 +1,5 @@
-use core::traits::TryInto;
-use core::option::OptionTrait;
+use traits::TryInto;
+use option::OptionTrait;
 use array::ArrayTrait;
 use serde::{Serde, Felt252Serde};
 use traits::{Into};
@@ -51,8 +51,8 @@ fn i33_test_serde() {
     assert(true == a_deserialized.sign, 'i33 serde failed');
 }
 
-const zombie_speed: i33 = 2;
-const zombie_width: i33 = 30;
+const zombie_speed: u32 = 2;
+const zombie_width: u32 = 30;
 const play_area: u32 = 1000;
 
 fn new_i33(inner: u32, sign: bool) -> i33 {
