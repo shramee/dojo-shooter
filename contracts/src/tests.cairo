@@ -88,10 +88,6 @@ fn test_dummy_zombie_update() {
     let zombie = world.entity('Zombie', 1.into(), 0, 0);
     world_exec_with_calldata(world, 'Update', array_with_val(1)); // 0: all, 1: update, 2: spawn
     let zombie_n = world.entity('Zombie', 1.into(), 0, 0);
-    (*zombie[0]).print();
-    (*zombie_n[0]).print();
-    (*zombie[1]).print();
-    (*zombie_n[1]).print();
     assert((*zombie[0] - *zombie_n[0]).try_into().unwrap() == zombie_speed, 'spawn: No data found');
     assert((*zombie[1] - *zombie_n[1]).try_into().unwrap() == zombie_speed, 'spawn: No data found');
 }

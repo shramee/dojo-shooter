@@ -104,16 +104,13 @@ mod Update {
     fn execute(ctx: Context, tasks: Tasks) { // Make zombies move towards the center
         match tasks {
             Tasks::all(_) => {
-                'all'.print();
                 update(ctx);
                 spawn(ctx);
             },
             Tasks::update(_) => {
-                'update'.print();
                 update(ctx);
             },
             Tasks::spawn(_) => {
-                'spawn'.print();
                 spawn(ctx);
             },
         }
