@@ -6,13 +6,34 @@ mod SpawnPlayer {
 
     // note: ignore linting of Context and commands
     fn execute(ctx: Context) {
-
-        let player = commands::<Score>::set_entity(
-            
-            ctx.caller_account.into(), (Score { kills: 0 })
-        );
+        let player = commands::<Score>::set_entity(ctx.caller_account.into(), (Score { kills: 0 }));
 
         return ();
+    }
+}
+
+#[system]
+mod GetZombies {
+    use array::ArrayTrait;
+    use traits::Into;
+    use debug::PrintTrait;
+    // use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL};
+    use dojo_shooter::components::{Zombie, new_i33};
+
+    fn execute(ctx: Context) -> Array<Zombie> {
+        let zombie_entities: Span<Zombie> = commands::<Zombie>::entities();
+        let mut zombies: Array<Zombie> = ArrayTrait::new();
+        let mut z_indx: usize = 0;
+        loop {
+            if (zombie_entities.len() == z_indx) {
+                break ();
+            };
+            zombies.append(*zombie_entities.at(z_indx));
+            z_indx += 1;
+        };
+        zombie_entities.len().print();
+        zombies.len().print();
+        zombies
     }
 }
 
