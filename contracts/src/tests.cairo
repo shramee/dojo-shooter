@@ -6,36 +6,32 @@ use array::ArrayTrait;
 use dojo_core::auth::systems::{Route, RouteTrait};
 use dojo_core::interfaces::{IWorldDispatcherTrait, IWorldDispatcher};
 use dojo_core::test_utils::spawn_test_world;
-// use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL};
 use dojo_shooter::components::{ScoreComponent, ZombieComponent, Zombie};
-use dojo_shooter::systems::{SpawnPlayer, SpawnDummyZombies, MoveZombies, Shoot};
+use dojo_shooter::systems::{SpawnPlayer, SpawnDummyZombies, Update, Shoot};
 use debug::PrintTrait;
 
 fn setup_world() -> IWorldDispatcher {
     let caller = starknet::contract_address_const::<0x0>();
     // components
     let mut components = array::ArrayTrait::new();
-    // components.append(QuadTLComponent::TEST_CLASS_HASH);
-    // components.append(QuadTRComponent::TEST_CLASS_HASH);
-    // components.append(QuadBLComponent::TEST_CLASS_HASH);
-    // components.append(QuadBRComponent::TEST_CLASS_HASH);
     components.append(ScoreComponent::TEST_CLASS_HASH);
     components.append(ZombieComponent::TEST_CLASS_HASH);
     // systems
     let mut systems = array::ArrayTrait::new();
     systems.append(SpawnPlayer::TEST_CLASS_HASH);
     systems.append(SpawnDummyZombies::TEST_CLASS_HASH);
-    systems.append(MoveZombies::TEST_CLASS_HASH);
+    systems.append(Update::TEST_CLASS_HASH);
     systems.append(Shoot::TEST_CLASS_HASH);
     // routes
     let mut routes = array::ArrayTrait::new();
+
     // deploy executor, world and register components/systems
     let world = spawn_test_world(components, systems, routes);
 
     let mut systems = array::ArrayTrait::new();
     systems.append('SpawnPlayer');
     systems.append('SpawnDummyZombies');
-    systems.append('MoveZombies');
+    systems.append('Update');
     systems.append('Shoot');
 
     world.assume_role('sudo', systems);

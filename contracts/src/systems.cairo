@@ -29,7 +29,6 @@ mod SpawnPlayer {
 mod SpawnDummyZombies {
     use array::ArrayTrait;
     use traits::Into;
-    // use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL};
     use dojo_shooter::components::{Zombie, new_i33};
 
     fn execute(ctx: Context) {
@@ -38,22 +37,40 @@ mod SpawnDummyZombies {
             1.into(), (Zombie { x: new_i33(500, false), y: new_i33(400, true) })
         );
         let score = commands::set_entity(
-            2.into(), (Zombie { x: new_i33(700, true), y: new_i33(500, false) })
+            2.into(), (Zombie { x: new_i33(700, true), y: new_i33(800, false) })
         );
         let score = commands::set_entity(
             3.into(), (Zombie { x: new_i33(400, false), y: new_i33(350, false) })
         );
         let score = commands::set_entity(
-            4.into(), (Zombie { x: new_i33(750, true), y: new_i33(200, false) })
+            4.into(), (Zombie { x: new_i33(750, true), y: new_i33(900, true) })
         );
     }
 }
 
 #[system]
-mod MoveZombies {
+mod Update {
     use array::ArrayTrait;
     use traits::Into;
+    use dojo_shooter::components::{Zombie, zombie_speed, ZombieSerde};
+    // use dojo_core::interfaces::{Context, IWorldDispatcherTrait};
     fn execute(ctx: Context) { // Make zombies move towards the center
+        // 
+        let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
+
+        let mut z_indx: usize = 0;
+        loop {
+            if (zombie_entities.len() == z_indx) {
+                break ();
+            };
+            let z_id: felt252 = *zombie_entities.at(z_indx);
+            let mut z_pos_span: Span<felt252> = *entities_data.at(z_indx);
+            let z_pos: Zombie = ZombieSerde::deserialize(ref z_pos_span).unwrap();
+
+            // Update Zombie position to get closer to 0,0
+
+            z_indx += 1;
+        };
     }
 }
 
