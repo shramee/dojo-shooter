@@ -6,13 +6,11 @@ mod SpawnPlayer {
 
     // note: ignore linting of Context and commands
     fn execute(ctx: Context) {
-        let score = commands::<Score>::entity(ctx.caller_account.into());
 
-        if (0 == score.kills) {
-            let player = commands::<Score>::set_entity(
-                ctx.caller_account.into(), (Score { kills: 3 })
-            );
-        }
+        let player = commands::<Score>::set_entity(
+            
+            ctx.caller_account.into(), (Score { kills: 0 })
+        );
 
         return ();
     }
