@@ -23,14 +23,22 @@ mod SpawnDummyZombies {
     use array::ArrayTrait;
     use traits::Into;
     // use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL};
-    use dojo_shooter::components::{Zombie};
+    use dojo_shooter::components::{Zombie, new_i33};
 
     fn execute(ctx: Context) {
         // Spawn zombies
-        let score = commands::set_entity(1.into(), (Zombie { x: 500, y: 400 }));
-        let score = commands::set_entity(2.into(), (Zombie { x: 700, y: 500 }));
-        let score = commands::set_entity(3.into(), (Zombie { x: 400, y: 350 }));
-        let score = commands::set_entity(4.into(), (Zombie { x: 750, y: 200 }));
+        let score = commands::set_entity(
+            1.into(), (Zombie { x: new_i33(500, false), y: new_i33(400, true) })
+        );
+        let score = commands::set_entity(
+            2.into(), (Zombie { x: new_i33(700, true), y: new_i33(500, false) })
+        );
+        let score = commands::set_entity(
+            3.into(), (Zombie { x: new_i33(400, false), y: new_i33(350, false) })
+        );
+        let score = commands::set_entity(
+            4.into(), (Zombie { x: new_i33(750, true), y: new_i33(200, false) })
+        );
     }
 }
 
