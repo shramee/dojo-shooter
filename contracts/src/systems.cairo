@@ -33,18 +33,10 @@ mod SpawnDummyZombies {
 
     fn execute(ctx: Context) {
         // Spawn zombies
-        let score = commands::set_entity(
-            1.into(), (Zombie { x: new_i33(500, false), y: new_i33(400, true) })
-        );
-        let score = commands::set_entity(
-            2.into(), (Zombie { x: new_i33(700, true), y: new_i33(800, false) })
-        );
-        let score = commands::set_entity(
-            3.into(), (Zombie { x: new_i33(400, false), y: new_i33(350, false) })
-        );
-        let score = commands::set_entity(
-            4.into(), (Zombie { x: new_i33(750, true), y: new_i33(900, true) })
-        );
+        commands::set_entity(1.into(), (Zombie { x: new_i33(500, false), y: new_i33(400, true) }));
+        commands::set_entity(2.into(), (Zombie { x: new_i33(700, true), y: new_i33(800, false) }));
+        commands::set_entity(3.into(), (Zombie { x: new_i33(400, false), y: new_i33(350, false) }));
+        commands::set_entity(4.into(), (Zombie { x: new_i33(750, true), y: new_i33(900, true) }));
     }
 }
 
@@ -53,9 +45,20 @@ mod Update {
     use array::ArrayTrait;
     use traits::Into;
     use dojo_shooter::components::{Zombie, zombie_speed, ZombieSerde};
+    use serde::Serde;
+    use debug::PrintTrait;
     // use dojo_core::interfaces::{Context, IWorldDispatcherTrait};
-    fn execute(ctx: Context) { // Make zombies move towards the center
-        // 
+
+    #[derive(Copy, Drop, Serde)]
+    enum Tasks {
+        all: (),
+        update: (),
+        spawn: (),
+    }
+
+    fn spawn(ctx: Context) {}
+
+    fn update(ctx: Context) {
         let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
 
         let mut z_indx: usize = 0;
@@ -65,12 +68,55 @@ mod Update {
             };
             let z_id: felt252 = *zombie_entities.at(z_indx);
             let mut z_pos_span: Span<felt252> = *entities_data.at(z_indx);
-            let z_pos: Zombie = ZombieSerde::deserialize(ref z_pos_span).unwrap();
+            let mut z: Zombie = ZombieSerde::deserialize(ref z_pos_span).unwrap();
 
-            // Update Zombie position to get closer to 0,0
+            if 0 != z.x.inner {
+                z.x.inner = if z.x.inner < zombie_speed {
+                    0
+                } else {
+                    z.x.inner - zombie_speed
+                };
+            }
+            if 0 != z.y.inner {
+                z.y.inner = if z.y.inner < zombie_speed {
+                    0
+                } else {
+                    z.y.inner - zombie_speed
+                };
+            }
 
+            let mut zombie_serialized: Array<felt252> = ArrayTrait::new();
+            z.serialize(ref zombie_serialized);
+
+            ctx
+                .world
+                .set_entity(
+                    ctx,
+                    'Zombie'.into(),
+                    QueryTrait::new_from_id(z_id.into()),
+                    0,
+                    zombie_serialized.span()
+                );
             z_indx += 1;
         };
+    }
+
+    fn execute(ctx: Context, tasks: Tasks) { // Make zombies move towards the center
+        match tasks {
+            Tasks::all(_) => {
+                'all'.print();
+                update(ctx);
+                spawn(ctx);
+            },
+            Tasks::update(_) => {
+                'update'.print();
+                update(ctx);
+            },
+            Tasks::spawn(_) => {
+                'spawn'.print();
+                spawn(ctx);
+            },
+        }
     }
 }
 
@@ -78,7 +124,6 @@ mod Update {
 mod Shoot {
     use array::ArrayTrait;
     use traits::Into;
-    // use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL, };
     use dojo_shooter::components::{Zombie};
 
     #[derive(Copy, Drop, Serde)]
