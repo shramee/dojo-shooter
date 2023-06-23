@@ -33,3 +33,11 @@ serve:
 	WORLD_ADDR=$$(tail -n1 ../last_deployed_world) cargo run --release;
 
 deploy_and_run: deploy indexer serve
+
+loop_update:
+	@WORLD_ADDR=$$(tail -n1 ./last_deployed_world); cd contracts; \
+	while true; do sleep 1 &\
+	sozo execute Update --world $$WORLD_ADDR;\
+	wait; done;
+
+
