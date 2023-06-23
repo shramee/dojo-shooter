@@ -63,6 +63,18 @@ fn test_dummy_zombie_spawn() {
 // assert(*position[0] != 0, 'pos1: x is wrong');
 // assert(*position[1] != 0, 'pos1: y is wrong');
 }
+
+#[test]
+#[available_gas(30000000)]
+fn test_player_spawn() {
+    let world = setup_world();
+
+    world_exec(world, 'SpawnPlayer');
+
+    let score = world.entity('Score', 0.into(), 0, 0);
+    assert(score.len() > 0, 'spawn: No data found');
+    assert(*score[0] == 0, 'initial score should be 0');
+}
 // #[test]
 // #[available_gas(30000000)]
 // fn test_physics_update() {
