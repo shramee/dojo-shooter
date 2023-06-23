@@ -13,8 +13,8 @@ deploy:
 	[ -n "$$WORLD_ADDR" ] && \
 		echo "$$WORLD_ADDR" > ../last_deployed_world && \
 		echo "$$SOZO_OUT" > ../deployed.log;
-	# sozo execute $(s) --world $$WORLD_ADDR
-
+	sozo execute SpawnDummyZombies --world $$WORLD_ADDR
+	
 # Usage: make ecs_exe s=Spawn
 ecs_exe:
 	@WORLD_ADDR=$$(tail -n1 ./last_deployed_world); \
