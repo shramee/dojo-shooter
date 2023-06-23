@@ -1,6 +1,7 @@
 use core::array::SpanTrait;
 use core::traits::{Into, TryInto};
 use core::option::OptionTrait;
+use starknet::testing::set_caller_address;
 use array::ArrayTrait;
 use dojo_core::auth::systems::{Route, RouteTrait};
 use dojo_core::interfaces::{IWorldDispatcherTrait, IWorldDispatcher};
@@ -57,11 +58,6 @@ fn test_dummy_zombie_spawn() {
     let zombie = world.entity('Zombie', 1.into(), 0, 0);
     assert(*zombie[0] != 0, 'spawn: No data found');
     assert(*zombie[1] != 0, 'spawn: No data found');
-    // zombie.print();
-    (*zombie[0]).print();
-    (*zombie[1]).print();
-// assert(*position[0] != 0, 'pos1: x is wrong');
-// assert(*position[1] != 0, 'pos1: y is wrong');
 }
 
 #[test]

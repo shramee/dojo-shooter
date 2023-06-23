@@ -12,30 +12,18 @@ mod SpawnPlayer {
     }
 }
 
-#[system]
-mod GetZombies {
-    use array::ArrayTrait;
-    use traits::Into;
-    use debug::PrintTrait;
-    // use dojo_shooter::components::{QuadTL, QuadTR, QuadBR, QuadBL};
-    use dojo_shooter::components::{Zombie, new_i33};
-
-    fn execute(ctx: Context) -> Array<Zombie> {
-        let zombie_entities: Span<Zombie> = commands::<Zombie>::entities();
-        let mut zombies: Array<Zombie> = ArrayTrait::new();
-        let mut z_indx: usize = 0;
-        loop {
-            if (zombie_entities.len() == z_indx) {
-                break ();
-            };
-            zombies.append(*zombie_entities.at(z_indx));
-            z_indx += 1;
-        };
-        zombie_entities.len().print();
-        zombies.len().print();
-        zombies
-    }
-}
+// To get the Zombies
+// "method": "starknet_call",
+// "params": [
+//     {
+//         "contract_address": "0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8",
+//         "entry_point_selector": "0x027706e83545bc0fb130476239ec381f65fba8f92e2379d60a07869aa04b4ccc",
+//         "calldata": [
+//             "0x5a6f6d626965", "0"
+//         ]
+//     },
+//     "pending"
+// ]
 
 #[system]
 mod SpawnDummyZombies {
