@@ -79,4 +79,4 @@ class DojoCalls {
 
 window.dojo = new DojoCalls();
 window.dojo.fetch_zombies();
-// setInterval(() => window.dojo.fetch_zombies(), 10000);
+setInterval(() => window.dojo.fetch_zombies(), 100);

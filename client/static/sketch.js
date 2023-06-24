@@ -21,9 +21,7 @@ function draw() {
   fill(0, 0, 0);
 
   window.dojo.zombies_on_chain.forEach(([x, y]) => {
-    console.log(coord(x), coord(y, 'y'));
     ellipse(coord(x), coord(y, 'y'), 5, 5);
     text(`${x}, ${y}`, coord(x), coord(y, 'y') - 5);
-    noLoop();
   });
 }
