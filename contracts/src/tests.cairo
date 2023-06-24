@@ -38,20 +38,15 @@ fn setup_world() -> IWorldDispatcher {
     world
 }
 
+fn array_append(mut a: Array<felt252>, v: felt252) -> Array<felt252> {
+    a.append(v);
+    a
+}
+
 fn array_with_val(v: felt252) -> Array<felt252> {
     let mut spawn_call_data: Array<felt252> = ArrayTrait::new();
     spawn_call_data.append(v);
     spawn_call_data
-}
-
-fn world_exec_with_calldata(
-    world: IWorldDispatcher, system: felt252, spawn_call_data: Array<felt252>
-) {
-    world.execute(system, spawn_call_data.span());
-}
-
-fn world_exec(world: IWorldDispatcher, system: felt252) {
-    world_exec_with_calldata(world, system, ArrayTrait::new());
 }
 
 #[test]
@@ -59,7 +54,7 @@ fn world_exec(world: IWorldDispatcher, system: felt252) {
 fn test_player_spawn() {
     let world = setup_world();
 
-    world_exec(world, 'SpawnPlayer');
+    world.execute('SpawnPlayer', ArrayTrait::new().span());
 
     let score = world.entity('Score', 0.into(), 0, 0);
     assert(score.len() > 0, 'spawn: No data found');
@@ -71,7 +66,7 @@ fn test_player_spawn() {
 fn test_dummy_zombie_spawn() {
     let world = setup_world();
 
-    world_exec(world, 'SpawnDummyZombies');
+    world.execute('SpawnDummyZombies', ArrayTrait::new().span());
 
     let zombie = world.entity('Zombie', 1.into(), 0, 0);
     assert(*zombie[0] != 0, 'spawn: No data found');
@@ -83,11 +78,30 @@ fn test_dummy_zombie_spawn() {
 fn test_dummy_zombie_update() {
     let world = setup_world();
 
-    world_exec(world, 'SpawnDummyZombies');
+    world.execute('SpawnDummyZombies', ArrayTrait::new().span());
 
     let zombie = world.entity('Zombie', 1.into(), 0, 0);
-    world_exec_with_calldata(world, 'Update', array_with_val(1)); // 0: all, 1: update, 2: spawn
+    world.execute('Update', array_append(ArrayTrait::new(), 1).span());
+
     let zombie_n = world.entity('Zombie', 1.into(), 0, 0);
     assert((*zombie[0] - *zombie_n[0]).try_into().unwrap() == zombie_speed, 'spawn: No data found');
     assert((*zombie[1] - *zombie_n[1]).try_into().unwrap() == zombie_speed, 'spawn: No data found');
+}
+
+fn exec_shoot_at(world: IWorldDispatcher, x: felt252, y: felt252) -> Span<felt252> {
+    let mut shoot_coords = ArrayTrait::new();
+    shoot_coords.append(x);
+    shoot_coords.append(y);
+    world.execute('Shoot', shoot_coords.span())
+}
+
+#[test]
+#[available_gas(30000000)]
+fn test_shoot() {
+    let world = setup_world();
+
+    world.execute('SpawnDummyZombies', ArrayTrait::new().span());
+
+    let zombie = world.entity('Zombie', 1.into(), 0, 0);
+    exec_shoot_at(world, *zombie[0], *zombie[1]);
 }

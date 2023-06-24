@@ -51,8 +51,14 @@ fn i33_test_serde() {
     assert(true == a_deserialized.sign, 'i33 serde failed');
 }
 
+// This speed is for both x and y,
+// So max speed is zombie_speed * root 2
 const zombie_speed: u32 = 5;
+
+// This is actually half of zombie width
 const zombie_width: u32 = 30;
+
+// Area in a quadrant, play field = 2 * play_area
 const play_area: u32 = 1000;
 
 fn new_i33(inner: u32, sign: bool) -> i33 {
