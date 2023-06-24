@@ -57,6 +57,7 @@ class DojoCalls {
 
     for (let i = 0; i < zombies_count; i++) {
       // zi is index of individual Zombie data span
+      let zid = 1 + i;
       let zi = starting_index + i * zombie_data_gap;
       //   console.log(i, zi, result[zi]);
       let x = parseInt(result[zi + 1]);
@@ -71,7 +72,7 @@ class DojoCalls {
         y *= -1;
       }
 
-      this.zombies_on_chain.push([x, y]);
+      this.zombies_on_chain.push([x, y, zid]);
     }
     // this.zombies_on_chain = result;
   }
