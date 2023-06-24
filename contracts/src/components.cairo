@@ -51,7 +51,7 @@ fn i33_test_serde() {
     assert(true == a_deserialized.sign, 'i33 serde failed');
 }
 
-const zombie_speed: u32 = 2;
+const zombie_speed: u32 = 5;
 const zombie_width: u32 = 30;
 const play_area: u32 = 1000;
 

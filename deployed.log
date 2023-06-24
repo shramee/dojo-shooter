@@ -25,9 +25,9 @@ AuthRole
 SpawnPlayer
   > class hash: 0x541a6323d95e4496354262e6f1b04d24e4f484f1a1f053cfc79613cb3fb14b5
 SpawnDummyZombies
-  > class hash: 0x26da5281d02f8dc7bb517a846255d8bb6df95b83d373e945e5abc3d26487520
-MoveZombies
-  > class hash: 0x51632b01aad7894f34da08c6d005e39de567b0db38947408d403589ae3dfb35
+  > class hash: 0x3fceee9c449014de828b654f4bcc46296ca33ce35e3062ae04b99746abedee7
+Update
+  > class hash: 0x413d0ff2badff4c32184a75509bdec51e90717d75ad26cea8b41befef1d73df
 Shoot
   > class hash: 0x686cf3265974a66c4fc24c6bc71d3ddbc97ff3654e77630f78357a569c14502
 RouteAuth
