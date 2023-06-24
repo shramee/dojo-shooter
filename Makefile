@@ -7,7 +7,7 @@ test:
 	cd contracts; sozo test
 
 deploy:
-	@cd contracts; \
+	@cd contracts;sozo build; \
 	SOZO_OUT="$$(sozo migrate)"; echo "$$SOZO_OUT"; \
 	WORLD_ADDR="$$(echo "$$SOZO_OUT" | grep "World at address" | rev | cut -d " " -f 1 | rev)"; \
 	[ -n "$$WORLD_ADDR" ] && \
@@ -36,8 +36,8 @@ deploy_and_run: deploy indexer serve
 
 loop_update:
 	@WORLD_ADDR=$$(tail -n1 ./last_deployed_world); cd contracts; \
-	while true; do sleep 1 &\
-	sozo execute Update --world $$WORLD_ADDR;\
+	while true; do sleep .1 &\
+	sozo execute Update -c 0 --world $$WORLD_ADDR;\
 	wait; done;
 
 
