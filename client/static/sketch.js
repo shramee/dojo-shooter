@@ -1,8 +1,14 @@
 let vmin = 500;
+let shapeShifterAni;
 
 function setup() {
   vmin = Math.min(windowHeight, windowWidth);
   createCanvas(vmin, vmin);
+  shapeShifterAni = loadAnimation(
+    'assets/character_zombie_switch0.png',
+    'assets/character_zombie_switch1.png',
+  );
+  shapeShifterAni.frameDelay = 20;
   noStroke();
 }
 
@@ -21,7 +27,8 @@ function draw() {
   fill(0, 0, 0);
 
   window.dojo.zombies_on_chain.forEach(([x, y]) => {
-    ellipse(coord(x), coord(y, 'y'), 5, 5);
+    ellipse(coord(x), coord(y, 'y'), 1, 1);
     text(`${x}, ${y}`, coord(x), coord(y, 'y') - 5);
   });
+  animation(shapeShifterAni, 250, 80);
 }
