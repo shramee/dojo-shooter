@@ -1,11 +1,11 @@
 use array::{ArrayTrait, SpanTrait};
 use traits::{Into, TryInto};
 use option::OptionTrait;
-use starknet::testing::set_caller_address;
+use starknet::{get_caller_address, testing::set_caller_address};
 use dojo_core::auth::systems::{Route, RouteTrait};
 use dojo_core::interfaces::{IWorldDispatcherTrait, IWorldDispatcher};
 use dojo_core::test_utils::spawn_test_world;
-use dojo_shooter::components::{ScoreComponent, ZombieComponent, Zombie, zombie_speed};
+use dojo_shooter::components::{ScoreComponent, ZombieComponent, Zombie, zombie_speed, zombie_width};
 use dojo_shooter::systems::{SpawnPlayer, SpawnDummyZombies, Update, Shoot};
 use debug::PrintTrait;
 
@@ -88,7 +88,7 @@ fn test_dummy_zombie_update() {
     assert((*zombie[1] - *zombie_n[1]).try_into().unwrap() == zombie_speed, 'spawn: No data found');
 }
 
-fn exec_shoot_at(world: IWorldDispatcher, x: felt252, y: felt252) -> Span<felt252> {
+fn exec_shoot_system(world: IWorldDispatcher, x: felt252, y: felt252) -> Span<felt252> {
     let mut shoot_coords = ArrayTrait::new();
     shoot_coords.append(x);
     shoot_coords.append(y);
@@ -100,8 +100,27 @@ fn exec_shoot_at(world: IWorldDispatcher, x: felt252, y: felt252) -> Span<felt25
 fn test_shoot() {
     let world = setup_world();
 
+    world.execute('SpawnPlayer', ArrayTrait::new().span());
     world.execute('SpawnDummyZombies', ArrayTrait::new().span());
 
+    let score = world.entity('Score', get_caller_address().into(), 0, 0);
+    assert(*score[0] == 0, 'Initial score should be 0');
+
     let zombie = world.entity('Zombie', 1.into(), 0, 0);
-    exec_shoot_at(world, *zombie[0], *zombie[1]);
+    assert(zombie.len() == 2, 'Zombie not Spawned');
+
+    // Shoot too far off
+    exec_shoot_system(world, *zombie[0] - zombie_width.into(), *zombie[1] + zombie_width.into());
+
+    let zombie = world.entity('Zombie', 1.into(), 0, 0);
+    assert(zombie.len() == 2, 'Zombie didn\'t survive');
+
+    // Shoot at the zombie, but slightly off.
+    exec_shoot_system(world, *zombie[0] - 22, *zombie[1] + 11);
+
+    let zombie = world.entity('Zombie', 1.into(), 0, 0);
+    assert(zombie.len() == 0, 'Zombie not dead');
+
+    let score = world.entity('Score', get_caller_address().into(), 0, 0);
+    assert(*score[0] == 1, 'Player score should be 1');
 }
