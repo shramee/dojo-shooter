@@ -61,6 +61,45 @@ const zombie_width: u32 = 30;
 // Area in a quadrant, play field = 2 * play_area
 const play_area: u32 = 1000;
 
+// An array of random u32
+// For simulating randomness with a mod based index
+fn spawn_targets() -> Array<u32> {
+    let mut ar = ArrayTrait::new();
+    ar.append(854);
+    ar.append(744);
+    ar.append(700);
+    ar.append(533);
+    ar.append(488);
+    ar.append(802);
+    ar.append(698);
+    ar.append(797);
+    ar.append(643);
+    ar.append(980);
+    ar.append(614);
+    ar.append(504);
+    ar.append(673);
+    ar.append(603);
+    ar.append(474);
+    ar.append(851);
+    ar.append(707);
+    ar.append(984);
+    ar.append(771);
+    ar.append(495);
+    ar.append(642);
+    ar.append(789);
+    ar.append(419);
+    ar.append(442);
+    ar.append(657);
+    ar.append(396);
+    ar.append(602);
+    ar.append(896);
+    ar.append(563);
+    ar.append(780);
+    ar.append(787);
+    ar.append(911);
+    ar
+}
+
 fn new_i33(inner: u32, sign: bool) -> i33 {
     i33 { inner, sign }
 }

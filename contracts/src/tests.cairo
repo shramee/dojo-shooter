@@ -81,6 +81,7 @@ fn test_dummy_zombie_update() {
     world.execute('SpawnDummyZombies', ArrayTrait::new().span());
 
     let zombie = world.entity('Zombie', 1.into(), 0, 0);
+
     world.execute('Update', array_append(ArrayTrait::new(), 1).span());
 
     let zombie_n = world.entity('Zombie', 1.into(), 0, 0);
