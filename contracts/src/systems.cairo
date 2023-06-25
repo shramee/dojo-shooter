@@ -12,19 +12,6 @@ mod SpawnPlayer {
     }
 }
 
-// To get the Zombies
-// "method": "starknet_call",
-// "params": [
-//     {
-//         "contract_address": "0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8",
-//         "entry_point_selector": "0x027706e83545bc0fb130476239ec381f65fba8f92e2379d60a07869aa04b4ccc",
-//         "calldata": [
-//             "0x5a6f6d626965", "0"
-//         ]
-//     },
-//     "pending"
-// ]
-
 #[system]
 // TODO: rename, doing more than spawn dummy zombies
 mod SpawnDummyZombies {
@@ -34,10 +21,10 @@ mod SpawnDummyZombies {
 
     fn execute(ctx: Context) {
         // Spawn zombies
-        commands::set_entity(1.into(), (Zombie { x: new_i33(500, false), y: new_i33(400, true) }));
-        commands::set_entity(2.into(), (Zombie { x: new_i33(700, true), y: new_i33(800, false) }));
-        commands::set_entity(3.into(), (Zombie { x: new_i33(400, false), y: new_i33(350, false) }));
-        commands::set_entity(4.into(), (Zombie { x: new_i33(750, true), y: new_i33(900, true) }));
+        commands::set_entity(0.into(), (Zombie { x: new_i33(500, false), y: new_i33(400, true) }));
+        commands::set_entity(1.into(), (Zombie { x: new_i33(700, true), y: new_i33(800, false) }));
+        commands::set_entity(2.into(), (Zombie { x: new_i33(400, false), y: new_i33(350, false) }));
+        commands::set_entity(3.into(), (Zombie { x: new_i33(750, true), y: new_i33(900, true) }));
 
         // Initialize frame count to 4 to avoid entity id clashes later with above zombies (first update will increment next frame to 5 before spawning)
         commands::set_entity('ticker'.into(), (SystemFrameTicker { frames: 4 }));
@@ -48,7 +35,9 @@ mod SpawnDummyZombies {
 mod Update {
     use array::ArrayTrait;
     use traits::{Into, TryInto};
-    use dojo_shooter::components::{Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33};
+    use dojo_shooter::components::{
+        Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33
+    };
     use serde::Serde;
     use debug::PrintTrait;
 
@@ -247,12 +236,23 @@ mod Shoot {
             if z.x.sign == x.sign {
                 if z.y.sign == y.sign { // Zombie is in same quadrant as the shot
                     let (min_slope, max_slope) = zombie_slope_range(z.x, z.y);
+                    'Zombie'.print();
+                    z_id.print();
+                    min_slope.print();
+                    max_slope.print();
+                    shot_slope.print();
+                    (shot_slope > min_slope).print();
+                    (shot_slope < max_slope).print();
                     // compare the slope of zombie to the bullet trajectory
                     // range for whole hitbox
                     if shot_slope > min_slope {
                         if shot_slope < max_slope { // Shot is within zombie hitpoint slope
+                            'Zombie killed!'.print();
+
                             ctx.world.delete_entity(ctx, 'Zombie', z_id.into());
+
                             let score = commands::<Score>::entity(ctx.caller_account.into());
+
                             let player = commands::<Score>::set_entity(
                                 ctx.caller_account.into(), (Score { kills: score.kills + 1 })
                             );

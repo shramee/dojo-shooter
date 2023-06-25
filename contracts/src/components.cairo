@@ -56,7 +56,7 @@ fn i33_test_serde() {
 const zombie_speed: u32 = 5;
 
 // This is actually half of zombie width
-const zombie_width: u32 = 30;
+const zombie_width: u32 = 72;
 
 // Area in a quadrant, play field = 2 * play_area
 const play_area: u32 = 1000;
@@ -121,7 +121,6 @@ struct Score {
 struct SystemFrameTicker {
     frames: u128, 
 }
-
 // @todo later
 // Keeps all time score
 // #[derive(Component, Copy, Drop, Serde)]

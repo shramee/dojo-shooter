@@ -9,8 +9,8 @@ function preload() {
   blaster = loadImage('assets/ImageToStl.com_blasterA.png');
   center_patch = loadImage('assets/patch.png');
   zombie_sprites = [
-    loadImage('assets/character_zombie_switch0.png'),
-    loadImage('assets/character_zombie_switch1.png'),
+    loadImage('assets/zombie_0.png'),
+    loadImage('assets/zombie_1.png'),
   ];
 }
 
@@ -22,7 +22,7 @@ function setup() {
 }
 
 function renderZombie(x, y, z_id) {
-  //   text(`${x}, ${y}`, coord(x) + 25, coord(y, 'y') - 5);
+  text(`${x}, ${y}`, coord(x) + 25, coord(y, 'y') - 5);
   //   console.log(Math.floor(frameCount / 20)) % 2);
   ellipse(
     coord(x),
@@ -36,8 +36,9 @@ function renderZombie(x, y, z_id) {
     ],
     coord(x),
     coord(y, 'y'),
+    // 1000 is half the play field, 72 is half the zombie size
     (vmin * 72) / 1000,
-    (vmin * 90) / 1000,
+    (vmin * 72) / 1000,
   );
 }
 

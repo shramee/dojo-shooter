@@ -6,7 +6,11 @@ build:
 test:
 	cd contracts; sozo test
 
-budep: build deploy
+redeploy:
+	@cd contracts; \
+	WORLD_ADDR=$$(tail -n1 ../last_deployed_world); \
+	sozo migrate --world $$WORLD_ADDR;
+
 
 deploy:
 	@cd contracts; \
@@ -38,9 +42,9 @@ serve:
 
 deploy_and_run: deploy indexer serve
 
-loop_update:
+loop_tick:
 	@WORLD_ADDR=$$(tail -n1 ./last_deployed_world); cd contracts; \
-	while true; do sleep .1 &\
+	while true; do sleep .2 &\
 	sozo execute Update -c 0 --world $$WORLD_ADDR;\
 	wait; done;
 
