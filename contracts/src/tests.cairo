@@ -138,7 +138,7 @@ fn test_spawn_ran_zombies() {
     let mut num_updates: u128 = 0;
     loop {
         world.execute('Update', array_append(ArrayTrait::new(), 2).span());
-        if num_updates == 25 {
+        if num_updates == 100 {
             break ();
         }
         num_updates += 1;

@@ -63,21 +63,49 @@ mod Update {
 
     fn spawn(ctx: Context) {
         let frames: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0]).try_into().unwrap();
-        'CURRENT FRAME'.print();
-        frames.print();
+        // 'CURRENT FRAME'.print();
+        // frames.print();
         let current_score: u32 = (*ctx.world.entity('Score', ctx.caller_account.into(), 0, 0)[0]).try_into().unwrap();
         if frames % 11 == 0 {
             'ENTERED SPAWN'.print();
-            let is_x_ran: bool = ( (frames + current_score.into() % 2 == 0) );
+            let randomness: u128 = ((frames + current_score.into()) / 11) % 8;
             let conversion_felt: felt252 = ((frames + current_score.into()) % spawn_targets().len().into()).into();
             let spawn_target = spawn_targets()[conversion_felt.try_into().unwrap()];
 
             let mut z: Zombie = Zombie { x: new_i33(1000, false), y: new_i33(1000, false) };
-            if is_x_ran {
+
+            // first four where x is random, different positive and negative combinations; second four where y is random
+            if randomness < 4 {
                 z.x.inner = *spawn_target;
+                if randomness == 1 {
+                    z.y.sign = true;
+                } else if randomness == 2 {
+                    z.x.sign = true;
+                } else if randomness == 3 {
+                    z.x.sign = true;
+                    z.y.sign = true;
+                }
             } else {
                 z.y.inner = *spawn_target;
+                if randomness == 5 {
+                    z.x.sign = true;
+                } else if randomness == 6 {
+                    z.y.sign = true;
+                }  else if randomness == 7 {
+                    z.y.sign = true;
+                    z.x.sign = true;
+                }
             }
+            
+            'NEW Z X'.print();
+            z.x.inner.print();
+            'NEW X SIGN'.print();
+            z.x.sign.print();
+            'NEW Z Y'.print();
+            z.y.inner.print();
+            'NEW Y SIGN'.print();
+            z.y.sign.print();
+            
 
             let mut zombie_serialized: Array<felt252> = ArrayTrait::new();
             z.serialize(ref zombie_serialized);
@@ -141,8 +169,8 @@ mod Update {
     fn execute(ctx: Context, tasks: Tasks) {        
         // increment current frame ticker by 1 and then update
         let next_frame: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0]).try_into().unwrap() + 1;
-        'NEXT FRAME'.print();
-        next_frame.print();
+        // 'NEXT FRAME'.print();
+        // next_frame.print();
         let mut ticker: SystemFrameTicker = SystemFrameTicker { frames: next_frame };
         
         let mut ticker_serialized: Array<felt252> = ArrayTrait::new();

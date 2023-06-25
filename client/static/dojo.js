@@ -2,26 +2,26 @@ class DojoCalls {
   zombies_on_chain = [];
   constructor() {
     this.world_addr = ecs_data.world_addr;
-    this.rpc = new starknet_.RpcProvider({
-      nodeUrl: ecs_data.rpc || 'localhost:5050',
-    });
+    // this.rpc = new starknet_.RpcProvider({
+    //   nodeUrl: ecs_data.rpc || 'localhost:5050',
+    // });
 
-    // initialize existing pre-deployed account 0 of Devnet
-    const privateKey = '0xe3e70682c2094cac629f6fbed82c07cd';
-    const starkKeyPair = ec.getKeyPair(privateKey);
-    const accountAddress =
-      '0x7e00d496e324876bbc8531f2d9a82bf154d1a04a50218ee74cdd372f75a551a';
+    // // initialize existing pre-deployed account 0 of Devnet
+    // const privateKey = '0xe3e70682c2094cac629f6fbed82c07cd';
+    // const starkKeyPair = ec.getKeyPair(privateKey);
+    // const accountAddress =
+    //   '0x7e00d496e324876bbc8531f2d9a82bf154d1a04a50218ee74cdd372f75a551a';
 
-    const account = new Account(this.rpc, accountAddress, starkKeyPair);
+    // const account = new Account(this.rpc, accountAddress, starkKeyPair);
 
-    setTimeout(async () => {
-      await starknet.enable();
-      this.contract = new starknet_.Contract(
-        ecs_data.abi,
-        this.world_addr,
-        starknet.provider,
-      );
-    }, 1000);
+    // setTimeout(async () => {
+    //   await starknet.enable();
+    //   this.contract = new starknet_.Contract(
+    //     ecs_data.abi,
+    //     this.world_addr,
+    //     starknet.provider,
+    //   );
+    // }, 1000);
   }
 
   async raw_fetch(method, params = []) {
