@@ -4,34 +4,38 @@ Migration account: 0x6f62894bfd81d2e396ce266b2ad0f21e0668d604e5bb1077337b6d570a5
 [1] 🌎 Building World state....
   > No remote World found
 [2] 🧰 Evaluating Worlds diff....
-  > Total diffs found: 21
+  > Total diffs found: 23
 [3] 📦 Preparing for migration....
-  > Total items to be migrated (21): New 21 Update 0
+  > Total items to be migrated (23): New 23 Update 0
   
 # Executor
   > contract address: 0x13c7a36b4f70191f6f17b407fcd7cc1b5b7d6488e3677855c7c51852dbbda96
 # World
   > contract address: 0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8
-# Components (5)
+# Components (7)
 Zombie
   > class hash: 0x61594146a2cfaf19727c6a98735831f6ce53b8f91fa470d28ced0822646941d
 Score
   > class hash: 0x783f191e4fb1fccef81d64469d5d1550b07888bc8d2dc915fc23da2406ac33a
 SystemFrameTicker
   > class hash: 0x392005b685f3cd9f428e8a4d962fa0b41f08f5d1859eed0a4cf84cab79ed7e9
+GameState
+  > class hash: 0x3ee90ad23284b6d4d21901d6d49110b2b645b2eda86c4e5484c2b237817c4bc
+HighScore
+  > class hash: 0x11b78a853a688fbee0646fd42c178777cf1c6b125ad4d251b0522ef904cbecc
 AuthStatus
   > class hash: 0x3e0b3ffb3e7cd8a661a7ac6b935bad3de651462ea1fb005cd4fff6550ac5337
 AuthRole
   > class hash: 0x2b61fb54b7be43094bca77ffe3c7da3d1aa1d8ca5ff3aef303d0672cce3c555
 # Systems (14)
-SpawnPlayer
-  > class hash: 0x541a6323d95e4496354262e6f1b04d24e4f484f1a1f053cfc79613cb3fb14b5
+Init
+  > class hash: 0x13815264e148388269ab50e3b0a0ffa7ad74aecbba14cd38c962278a4bd6e91
 SpawnDummyZombies
-  > class hash: 0x3f4f0c2af51a5139c3e457ab762373e05c9c3ce1d180b25185e4b2623d3fd24
+  > class hash: 0x6ea145e11d2ab3d3c3168c5e8489edd802bcb6aa43607c1d69cb29be0181c6e
 Update
-  > class hash: 0x1c1f90949221d5e452e52301823b14b9dd0f5f306c6f1861750f557064605b2
+  > class hash: 0x14ec8f19c8f61aa5aea47a21ce73a31e3eeb497261d12160eaf4d1bd996ba18
 Shoot
-  > class hash: 0x62d660b4ac843dfe42ace48640b301a60a6a4b086099b29ff0de0db343247ce
+  > class hash: 0x7a81126b85484e0160352f9c6fbe0e52f4a04d1fc2bec42e204139036f65e72
 RouteAuth
   > class hash: 0x328155f2126a5ddbfaeaadd84b0ae2aade22c8e764c981bdf66ed593b5f611c
 IsAccountAdmin

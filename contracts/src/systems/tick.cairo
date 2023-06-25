@@ -3,7 +3,7 @@ mod Update {
     use array::ArrayTrait;
     use traits::{Into, TryInto};
     use dojo_shooter::components::{
-        Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33, GameState, GameStates
+        Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33, GameState, GameStates, HighScore, HighScoreSerde
     };
     use serde::Serde;
     use debug::PrintTrait;
@@ -70,6 +70,10 @@ mod Update {
                     0,
                     zombie_serialized.span()
                 );
+        }
+
+        if frames > 100 {
+            finish_game(ctx);
         }
     }
 
@@ -157,4 +161,68 @@ mod Update {
             },
         }
     }
+
+    fn finish_game(ctx: Context) {
+        // set game state to finished to prevent further frame updates
+        let mut game_state: GameState = GameState { state: GameStates::Finished(()) };
+
+        let mut game_state_serialized: Array<felt252> = ArrayTrait::new();
+        game_state_serialized.serialize(ref game_state_serialized);
+        
+        ctx
+        .world
+        .set_entity(
+            ctx,
+            'GameState'.into(),
+            'game_state'.into(),
+            0,
+            game_state_serialized.span()
+        );
+
+        // delete all zombies to prepare for next game
+        let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
+
+        let mut z_indx: usize = 0;
+        loop {
+            if (zombie_entities.len() == z_indx) {
+                break ();
+            };
+            let z_id: felt252 = *zombie_entities.at(z_indx);
+            ctx.world.delete_entity(ctx, 'Zombie', z_id.into());
+
+            z_indx += 1;
+        };
+
+        // // get current score to see if new high score should be set (don't have to reset to 0 as init on next game does so for us)
+        // let current_score: u128 = (*ctx.world.entity('Score', ctx.caller_account.into(), 0, 0)[0])
+        //     .try_into()
+        //     .unwrap();
+
+        // let mut score_to_serialize: Score = Score { kills: current_score };
+
+        // let mut current_score_serialized: Array<felt252> = ArrayTrait::new();
+        // score_to_serialize.serialize(ref ticker_serialized);
+
+        //     let mut high_score_serialized = ctx.world.entity('HighScore', 'high_score'.into(), 0, 0);
+        //     if high_score_serialized.len() == 0 {
+        //                     ctx
+        //                     .world
+        //                     .set_entity(
+        //                         ctx,
+        //                         ''.into(),
+        //                         QueryTrait::new_from_id('game_state'.into()),
+        //                         0,
+        //                         current_score_serialized.span()
+        //                         );
+        //     } else {
+        //         let current_high_score: u32 = HighScoreSerde::deserialize(ref high_score_serialized).unwrap();
+        //         if current_score > current_high_score {
+        //             commands::set_entity('high_score'.into(), (HighScore { score: current_score, score_holer: ctx.caller_account}));
+        //         }
+        //     }
+        
+        // let player = commands::<Score>::set_entity(
+        //     ctx.caller_account.into(), (Score { kills: 0 })
+        //     );
+}
 }
