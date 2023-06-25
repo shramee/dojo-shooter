@@ -157,4 +157,36 @@ mod Update {
             },
         }
     }
+
+    fn finish_game(ctx: Context) {
+        // set game state to finished to prevent further frame updates
+        let mut game_state: GameState = GameState { state: GameStates::Finished(()) };
+
+        let mut game_state_serialized: Array<felt252> = ArrayTrait::new();
+        game_state.serialize(ref game_state_serialized);
+        
+        ctx
+        .world
+        .set_entity(
+            ctx,
+            'GameState'.into(),
+            'game_state'.into(),
+            0,
+            game_state_serialized.span()
+        );
+
+        // delete all zombies to prepare for next game
+        let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
+
+        let mut z_indx: usize = 0;
+        loop {
+            if (zombie_entities.len() == z_indx) {
+                break ();
+            };
+            let z_id: felt252 = *zombie_entities.at(z_indx);
+            ctx.world.delete_entity(ctx, 'Zombie', z_id.into());
+
+            z_indx += 1;
+            };
+        }
 }
