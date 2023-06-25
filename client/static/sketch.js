@@ -19,6 +19,7 @@ function setup() {
   createCanvas(vmin, vmin);
   imageMode(CENTER);
   noStroke();
+  textAlign(RIGHT);
 }
 
 function renderZombie(x, y, z_id) {

@@ -1,5 +1,3 @@
-
-
 build:
 	cd contracts;sozo build
 
@@ -20,13 +18,12 @@ deploy:
 		echo "$$WORLD_ADDR" > ../last_deployed_world && \
 		echo "$$SOZO_OUT" > ../deployed.log; \
 	WORLD_ADDR=$$(tail -n1 ../last_deployed_world); \
-	sozo execute SpawnDummyZombies --world $$WORLD_ADDR; \
-	sozo execute SpawnPlayer --world $$WORLD_ADDR;
+	sozo execute Init --world $$WORLD_ADDR;
 	
 # Usage: make ecs_exe s=Spawn
 ecs_exe:
 	@WORLD_ADDR=$$(tail -n1 ./last_deployed_world); \
-	cd contracts; echo "sozo execute $(s) --world $$WORLD_ADDR"; \
+	cd contracts; echo "sozo execute $(s) --world $$WORLD_ADDR -c $(c)"; \
 	sozo execute $(s) --world $$WORLD_ADDR
 
 # Usage: make ecs_ntt c=Acc e=1

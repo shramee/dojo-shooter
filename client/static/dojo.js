@@ -21,10 +21,10 @@ class DojoCalls {
 
     // initialize existing pre-deployed account 0 of Devnet
     const privateKey =
-      '0x07230b49615d175307d580c33d6fda61fc7b9aec91df0f5c1a5ebe3b8cbfee02';
+      '0x0326b6d921c2d9c9b76bb641c433c94b030cf57d48803dc742729704ffdd0fc6';
     const starkKeyPair = starknet_.ec.getKeyPair(privateKey);
     const accountAddress =
-      '0x06f62894bfd81d2e396ce266b2ad0f21e0668d604e5bb1077337b6d570a54aea';
+      '0x04b352538f61697825af242c9c451df02a40cca99391a47054489dee82138008';
 
     this.account = new starknet_.Account(
       this.rpc,
@@ -110,7 +110,7 @@ class DojoCalls {
 
     for (let i = 0; i < zombies_count; i++) {
       // zi is index of individual Zombie data span
-      let zid = 1 + i;
+      let zid = parseInt(result[1 + i]);
       let zi = starting_index + i * zombie_data_gap;
       //   console.log(i, zi, result[zi]);
       let x = parseInt(result[zi + 1]);
