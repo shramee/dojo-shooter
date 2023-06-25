@@ -3,7 +3,7 @@ mod Update {
     use array::ArrayTrait;
     use traits::{Into, TryInto};
     use dojo_shooter::components::{
-        Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33, GameState, GameStates
+        Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33, GameState, GameStates, HighScore, HighScoreSerde
     };
     use serde::Serde;
     use debug::PrintTrait;
@@ -70,6 +70,10 @@ mod Update {
                     0,
                     zombie_serialized.span()
                 );
+        }
+
+        if frames > 100 {
+            finish_game(ctx);
         }
     }
 
@@ -186,7 +190,7 @@ mod Update {
             let z_id: felt252 = *zombie_entities.at(z_indx);
             ctx.world.delete_entity(ctx, 'Zombie', z_id.into());
 
-            z_indx += 1;
+            z_indx += 10;
             };
         }
 }

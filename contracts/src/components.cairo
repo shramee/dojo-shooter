@@ -4,6 +4,7 @@ use array::ArrayTrait;
 use serde::{Serde, Felt252Serde};
 use traits::{Into};
 use alexandria_math::signed_integers::i33;
+use starknet::ContractAddress;
 
 impl I33Serde of Serde<i33> {
     fn serialize(self: @i33, ref output: Array<felt252>) {
@@ -131,4 +132,10 @@ struct GameState {
 enum GameStates {
     Finished: (),
     Running: ()
+}
+
+#[derive(Component, Copy, Drop, Serde)]
+struct HighScore {
+    score: u32,
+    score_holer: ContractAddress
 }
