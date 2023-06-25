@@ -2,17 +2,9 @@ class DojoCalls {
   zombies_on_chain = [];
   constructor() {
     this.world_addr = ecs_data.world_addr;
-    this.rpc = new starknet_.RpcProvider({
-      nodeUrl: ecs_data.rpc || 'localhost:5050',
-    });
-
-    // initialize existing pre-deployed account 0 of Devnet
-    const privateKey = '0xe3e70682c2094cac629f6fbed82c07cd';
-    const starkKeyPair = ec.getKeyPair(privateKey);
-    const accountAddress =
-      '0x7e00d496e324876bbc8531f2d9a82bf154d1a04a50218ee74cdd372f75a551a';
-
-    const account = new Account(this.rpc, accountAddress, starkKeyPair);
+    // this.rpc = new starknet.RpcProvider({
+    //   nodeUrl: ecs_data.rpc || 'localhost:5050',
+    // });
 
     setTimeout(async () => {
       await starknet.enable();
@@ -39,11 +31,13 @@ class DojoCalls {
     });
     return await req.json();
   }
+
+  async fetch_zombies() {}
+
   async fetch_zombies() {
     let response = await window.dojo.raw_fetch('starknet_call', [
       {
-        contract_address:
-          '0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8',
+        contract_address: this.world_addr,
         entry_point_selector:
           '0x027706e83545bc0fb130476239ec381f65fba8f92e2379d60a07869aa04b4ccc',
         calldata: ['0x5a6f6d626965', '0'],
