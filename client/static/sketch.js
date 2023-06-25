@@ -74,6 +74,7 @@ function mouseClicked() {
   if (click_coordinates[0] < 0) {
     gun_rotation += Math.PI;
   }
+  dojo.shoot(...click_coordinates);
   // prevent default
   return false;
 }

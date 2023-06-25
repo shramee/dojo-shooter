@@ -1,31 +1,48 @@
+function asciiToFelt(str) {
+  if (!isNaN(str)) return '' + str;
+  var arr1 = [];
+  for (var n = 0, l = str.length; n < l; n++) {
+    const hex = Number(str.charCodeAt(n)).toString(16);
+    arr1.push(hex);
+  }
+  let hex = arr1.join('');
+  if (hex % 2) hex = '0' + hex;
+  return BigInt('0x' + hex).toString();
+}
+
 class DojoCalls {
   zombies_on_chain = [];
+  rpcUrl = ecs_data.rpc || 'localhost:5050';
   constructor() {
     this.world_addr = ecs_data.world_addr;
-    // this.rpc = new starknet_.RpcProvider({
-    //   nodeUrl: ecs_data.rpc || 'localhost:5050',
-    // });
+    this.rpc = new starknet_.RpcProvider({
+      nodeUrl: this.rpcUrl,
+    });
 
-    // // initialize existing pre-deployed account 0 of Devnet
-    // const privateKey = '0xe3e70682c2094cac629f6fbed82c07cd';
-    // const starkKeyPair = ec.getKeyPair(privateKey);
-    // const accountAddress =
-    //   '0x7e00d496e324876bbc8531f2d9a82bf154d1a04a50218ee74cdd372f75a551a';
+    // initialize existing pre-deployed account 0 of Devnet
+    const privateKey =
+      '0x07230b49615d175307d580c33d6fda61fc7b9aec91df0f5c1a5ebe3b8cbfee02';
+    const starkKeyPair = starknet_.ec.getKeyPair(privateKey);
+    const accountAddress =
+      '0x06f62894bfd81d2e396ce266b2ad0f21e0668d604e5bb1077337b6d570a54aea';
 
-    // const account = new Account(this.rpc, accountAddress, starkKeyPair);
-
-    // setTimeout(async () => {
-    //   await starknet.enable();
-    //   this.contract = new starknet_.Contract(
-    //     ecs_data.abi,
-    //     this.world_addr,
-    //     starknet.provider,
-    //   );
-    // }, 1000);
+    this.account = new starknet_.Account(
+      this.rpc,
+      accountAddress,
+      starkKeyPair,
+    );
+    setTimeout(async () => {
+      await starknet.enable();
+      this.contract = new starknet_.Contract(
+        ecs_data.abi,
+        this.world_addr,
+        starknet.provider,
+      );
+    }, 1000);
   }
 
   async raw_fetch(method, params = []) {
-    let req = await fetch(ecs_data.rpc || 'http://localhost:5050', {
+    let req = await fetch(this.rpcUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,11 +56,39 @@ class DojoCalls {
     });
     return await req.json();
   }
+
+  async exec_system(system_name, calldata) {
+    const nonce = await this.account.getNonce();
+    return await this.account.execute(
+      {
+        contractAddress: this.world_addr,
+        // Entrypoint for execute: 0x02400...b1c44
+        entrypoint: 'execute',
+        // '0x240060cdb34fcc260f41eac7474ee1d7c80b7e3607daff9ac67c7ea2ebb1c44',
+        calldata: [asciiToFelt(system_name), calldata.length, ...calldata],
+      },
+      undefined,
+      {
+        nonce,
+        maxFee: 99999999999, // TODO: Update
+      },
+    );
+  }
+
+  async shoot(x, y) {
+    x = Math.round(x);
+    y = Math.round(y) * -1;
+    x = x < 0 ? Math.abs(x) + 4294967296 : Math.abs(x);
+    y = y < 0 ? Math.abs(y) + 4294967296 : Math.abs(y);
+    let response = await this.exec_system('Shoot', [x, y]);
+
+    console.log(response);
+  }
+
   async fetch_zombies() {
     let response = await window.dojo.raw_fetch('starknet_call', [
       {
-        contract_address:
-          '0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8',
+        contract_address: this.world_addr,
         entry_point_selector:
           '0x027706e83545bc0fb130476239ec381f65fba8f92e2379d60a07869aa04b4ccc',
         calldata: ['0x5a6f6d626965', '0'],
@@ -84,8 +129,18 @@ class DojoCalls {
     }
     // this.zombies_on_chain = result;
   }
+
+  start() {
+    this.fetch_zombies();
+    this.interval = setInterval(() => {
+      this.fetch_zombies();
+    }, 100);
+  }
+
+  stop() {
+    clearInterval(this.interval);
+  }
 }
 
 window.dojo = new DojoCalls();
-window.dojo.fetch_zombies();
-setInterval(() => window.dojo.fetch_zombies(), 100);
+window.dojo.start();

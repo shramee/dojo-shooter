@@ -1,6 +1,8 @@
 // import worldsJson from "contracts/worlds.json";
 
-const worlds = worldsJson as Partial<Record<string, { address: string; blockNumber?: number }>>;
+// const worlds = worldsJson as Partial<
+//     Record<string, { address: string; blockNumber?: number }>
+// >;
 
 type NetworkConfig = SetupContractConfig & {
     privateKey: string;
@@ -11,11 +13,10 @@ type NetworkConfig = SetupContractConfig & {
 // providers
 
 export async function getNetworkConfig(): Promise<NetworkConfig> {
-
     return {
         provider: {
-            rpc: ""
+            rpc: "",
         },
-        privateKey: getBurnerWallet().value
+        privateKey: getBurnerWallet().value,
     };
 }

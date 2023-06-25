@@ -62,6 +62,7 @@ mod Update {
     }
 
     fn spawn(ctx: Context) {
+
         let frames: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0]).try_into().unwrap();
         // 'CURRENT FRAME'.print();
         // frames.print();
@@ -109,17 +110,16 @@ mod Update {
 
             let mut zombie_serialized: Array<felt252> = ArrayTrait::new();
             z.serialize(ref zombie_serialized);
-            
-            ctx
-            .world
-            .set_entity(
-                ctx,
-                'Zombie'.into(),
-                QueryTrait::new_from_id(frames.into()),
-                0,
-                zombie_serialized.span()
-                );
 
+            ctx
+                .world
+                .set_entity(
+                    ctx,
+                    'Zombie'.into(),
+                    QueryTrait::new_from_id(frames.into()),
+                    0,
+                    zombie_serialized.span()
+                );
         }
     }
 
@@ -166,25 +166,26 @@ mod Update {
         };
     }
 
-    fn execute(ctx: Context, tasks: Tasks) {        
+    fn execute(ctx: Context, tasks: Tasks) {
         // increment current frame ticker by 1 and then update
         let next_frame: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0]).try_into().unwrap() + 1;
         // 'NEXT FRAME'.print();
         // next_frame.print();
+
         let mut ticker: SystemFrameTicker = SystemFrameTicker { frames: next_frame };
-        
+
         let mut ticker_serialized: Array<felt252> = ArrayTrait::new();
         ticker.serialize(ref ticker_serialized);
 
         ctx
-        .world
-        .set_entity(
-            ctx,
-            'SystemFrameTicker'.into(),
-            QueryTrait::new_from_id('ticker'.into()),
-            0,
-            ticker_serialized.span()
-        );
+            .world
+            .set_entity(
+                ctx,
+                'SystemFrameTicker'.into(),
+                QueryTrait::new_from_id('ticker'.into()),
+                0,
+                ticker_serialized.span()
+            );
 
         match tasks {
             Tasks::all(_) => {
