@@ -1,19 +1,24 @@
 #[system]
-mod SpawnPlayer {
+mod Init {
     use array::ArrayTrait;
     use traits::Into;
-    use dojo_shooter::components::{Score};
+    use dojo_shooter::components::{Score, GameState, GameStates, SystemFrameTicker};
 
     // note: ignore linting of Context and commands
     fn execute(ctx: Context) {
         let player = commands::<Score>::set_entity(ctx.caller_account.into(), (Score { kills: 0 }));
+
+        // so that first zombie will appear after just a few frames, set initial to 8
+        commands::set_entity('ticker'.into(), (SystemFrameTicker { frames: 8 }));
+
+        // set game state to running to kick off updates
+        commands::set_entity('game_state'.into(), (GameState { state: GameStates::Running ({}) }));
 
         return ();
     }
 }
 
 #[system]
-// TODO: rename, doing more than spawn dummy zombies
 mod SpawnDummyZombies {
     use array::ArrayTrait;
     use traits::Into;

@@ -3,10 +3,11 @@ mod Update {
     use array::ArrayTrait;
     use traits::{Into, TryInto};
     use dojo_shooter::components::{
-        Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33
+        Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33, GameState, GameStates
     };
     use serde::Serde;
     use debug::PrintTrait;
+    use dojo_shooter::utils::get_game_state;
 
     // use dojo_core::interfaces::{Context, IWorldDispatcherTrait};
 
@@ -21,13 +22,10 @@ mod Update {
         let frames: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0])
             .try_into()
             .unwrap();
-        // 'CURRENT FRAME'.print();
-        // frames.print();
         let current_score: u32 = (*ctx.world.entity('Score', ctx.caller_account.into(), 0, 0)[0])
             .try_into()
             .unwrap();
         if frames % 11 == 0 {
-            'ENTERED SPAWN'.print();
             let randomness: u128 = ((frames + current_score.into()) / 11) % 8;
             let conversion_felt: felt252 = ((frames + current_score.into()) % spawn_targets()
                 .len()
@@ -59,15 +57,6 @@ mod Update {
                     z.x.sign = true;
                 }
             }
-
-            'NEW Z X'.print();
-            z.x.inner.print();
-            'NEW X SIGN'.print();
-            z.x.sign.print();
-            'NEW Z Y'.print();
-            z.y.inner.print();
-            'NEW Y SIGN'.print();
-            z.y.sign.print();
 
             let mut zombie_serialized: Array<felt252> = ArrayTrait::new();
             z.serialize(ref zombie_serialized);
@@ -128,13 +117,17 @@ mod Update {
     }
 
     fn execute(ctx: Context, tasks: Tasks) {
+
+        match get_game_state(ctx) {
+            GameStates::Finished(()) => { return {}; },
+            GameStates::Running(()) => {}
+        }
+
         // increment current frame ticker by 1 and then update
         let next_frame: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0])
             .try_into()
             .unwrap()
             + 1;
-        // 'NEXT FRAME'.print();
-        // next_frame.print();
 
         let mut ticker: SystemFrameTicker = SystemFrameTicker { frames: next_frame };
 
