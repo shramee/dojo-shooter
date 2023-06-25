@@ -1,5 +1,5 @@
 
-Migration account: 0x6f62894bfd81d2e396ce266b2ad0f21e0668d604e5bb1077337b6d570a54aea
+Migration account: 0x6d48c7a2a1d0471bfd699ff3e166aa86bf7439ff3eb2c22101cef04b2ba60cb
 
 [1] 🌎 Building World state....
   > No remote World found
@@ -27,11 +27,11 @@ AuthRole
 SpawnPlayer
   > class hash: 0x541a6323d95e4496354262e6f1b04d24e4f484f1a1f053cfc79613cb3fb14b5
 SpawnDummyZombies
-  > class hash: 0x3f4f0c2af51a5139c3e457ab762373e05c9c3ce1d180b25185e4b2623d3fd24
+  > class hash: 0x6ea145e11d2ab3d3c3168c5e8489edd802bcb6aa43607c1d69cb29be0181c6e
 Update
-  > class hash: 0x1c1f90949221d5e452e52301823b14b9dd0f5f306c6f1861750f557064605b2
+  > class hash: 0x1fdd0d3ba5bd4615818adfc0b5de6cfd1e7eeb9c071393229c90a4568825dd0
 Shoot
-  > class hash: 0x62d660b4ac843dfe42ace48640b301a60a6a4b086099b29ff0de0db343247ce
+  > class hash: 0x6b939297ebe6fb2904804e4ca34dc07bb03b7f1d13c4416af173920ac0d98ea
 RouteAuth
   > class hash: 0x328155f2126a5ddbfaeaadd84b0ae2aade22c8e764c981bdf66ed593b5f611c
 IsAccountAdmin
@@ -54,6 +54,6 @@ LibraryCall
   > class hash: 0x912b21a6d10657808535a4f7ef5f3cbbb594df8082925b9694159ff0dab2f
 
 Configuration:
-  > Admin role for account 0x6f62894bfd81d2e396ce266b2ad0f21e0668d604e5bb1077337b6d570a54aea
+  > Admin role for account 0x6d48c7a2a1d0471bfd699ff3e166aa86bf7439ff3eb2c22101cef04b2ba60cb
 
 🎉 Successfully migrated World at address 0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8
