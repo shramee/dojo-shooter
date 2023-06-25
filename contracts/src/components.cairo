@@ -123,7 +123,12 @@ struct SystemFrameTicker {
 }
 
 #[derive(Component, Copy, Drop, Serde)]
-enum GameState {
+struct GameState {
+    state: GameStates
+}
+
+#[derive(Copy, Drop, Serde)]
+enum GameStates {
     Running: (),
     Finished: (),
 }
