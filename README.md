@@ -60,5 +60,4 @@ This whole process can be offloaded to another thread to avoid having the render
 
 ### Known bug - Indexing issue
 
-There seems to ba an issue with indexing when setting entity components with the same ID duplicates them (which can be affirmed by shadow getting thicker in the UI). Similar issue which might be related happens when trying to delete these entities. This issue is reported at https://github.com/dojoengine/dojo/issues/558.
-This either happens because of some indexing bug or 
+We had an issue with entity components indexing where sometimes they duplicate or don't delete. This could be because we don't fully understand how to use entity/component indexing in Dojo. We have asked in the Telegram group to obtain more information.
