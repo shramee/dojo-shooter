@@ -1,4 +1,4 @@
-# dojo-shooter
+# Dojo shooter
 
 ### You are the last survivor in a zombie apocalypse. Shoot the zombies before they invade your base.
 
