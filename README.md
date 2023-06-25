@@ -58,3 +58,7 @@ You may notice a glitch when you shoot a zombie.
 The whole rendition pauses for like half a second, that when the client tries to prepare the transaction and do the signatures.
 This whole process can be offloaded to another thread to avoid having the renderer freeze up.
 
+### Known bug - Indexing issue
+
+There seems to ba an issue with indexing when setting entity components with the same ID duplicates them (which can be affirmed by shadow getting thicker in the UI). Similar issue which might be related happens when trying to delete these entities. This issue is reported at https://github.com/dojoengine/dojo/issues/558.
+This either happens because of some indexing bug or 
