@@ -3,7 +3,8 @@ mod Update {
     use array::ArrayTrait;
     use traits::{Into, TryInto};
     use dojo_shooter::components::{
-        Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33, GameState, GameStates
+        Zombie, zombie_speed, zombie_width, ZombieSerde, Score, SystemFrameTicker, spawn_targets,
+        new_i33, GameState, GameStates
     };
     use serde::Serde;
     use debug::PrintTrait;
@@ -61,20 +62,14 @@ mod Update {
             let mut zombie_serialized: Array<felt252> = ArrayTrait::new();
             z.serialize(ref zombie_serialized);
 
-            ctx
-                .world
-                .set_entity(
-                    ctx,
-                    'Zombie'.into(),
-                    QueryTrait::new_from_id(frames.into()),
-                    0,
-                    zombie_serialized.span()
-                );
+            ctx.world.set_entity(ctx, 'Zombie', frames.into(), 0, zombie_serialized.span());
         }
     }
 
     fn update(ctx: Context) {
         let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
+
+        let lose_distance = zombie_width * 2;
 
         let mut z_indx: usize = 0;
         loop {
@@ -85,41 +80,44 @@ mod Update {
             let mut z_pos_span: Span<felt252> = *entities_data.at(z_indx);
             let mut z: Zombie = ZombieSerde::deserialize(ref z_pos_span).unwrap();
 
-            if 0 != z.x.inner {
-                z.x.inner = if z.x.inner < zombie_speed {
-                    0
-                } else {
-                    z.x.inner - zombie_speed
-                };
+            let mut coordinates_breached = 0;
+
+            if lose_distance != z.x.inner {
+                z
+                    .x
+                    .inner =
+                        if z.x.inner - lose_distance < zombie_speed {
+                            coordinates_breached += 1;
+                            lose_distance
+                        } else {
+                            z.x.inner - zombie_speed
+                        };
             }
-            if 0 != z.y.inner {
-                z.y.inner = if z.y.inner < zombie_speed {
-                    0
-                } else {
-                    z.y.inner - zombie_speed
-                };
+            if lose_distance != z.y.inner {
+                z
+                    .y
+                    .inner =
+                        if z.y.inner - lose_distance < zombie_speed {
+                            coordinates_breached += 1;
+                            lose_distance
+                        } else {
+                            z.y.inner - zombie_speed
+                        };
             }
 
             let mut zombie_serialized: Array<felt252> = ArrayTrait::new();
             z.serialize(ref zombie_serialized);
 
-            ctx
-                .world
-                .set_entity(
-                    ctx,
-                    'Zombie'.into(),
-                    QueryTrait::new_from_id(z_id.into()),
-                    0,
-                    zombie_serialized.span()
-                );
+            ctx.world.set_entity(ctx, 'Zombie', z_id.into(), 0, zombie_serialized.span());
             z_indx += 1;
         };
     }
 
     fn execute(ctx: Context, tasks: Tasks) {
-
         match get_game_state(ctx) {
-            GameStates::Finished(()) => { return {}; },
+            GameStates::Finished(()) => {
+                return {};
+            },
             GameStates::Running(()) => {}
         }
 
@@ -136,13 +134,7 @@ mod Update {
 
         ctx
             .world
-            .set_entity(
-                ctx,
-                'SystemFrameTicker'.into(),
-                QueryTrait::new_from_id('ticker'.into()),
-                0,
-                ticker_serialized.span()
-            );
+            .set_entity(ctx, 'SystemFrameTicker', 'ticker'.into(), 0, ticker_serialized.span());
 
         match tasks {
             Tasks::all(_) => {

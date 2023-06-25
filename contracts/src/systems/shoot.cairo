@@ -3,8 +3,10 @@ mod Shoot {
     use array::ArrayTrait;
     use traits::Into;
     use debug::PrintTrait;
-    use dojo_shooter::components::{ Zombie, ZombieSerde, i33, I33Serde, zombie_width, Score, GameState, GameStates };
-    use dojo_shooter::systems::init::{ Init };
+    use dojo_shooter::components::{
+        Zombie, ZombieSerde, i33, I33Serde, zombie_width, Score, GameState, GameStates
+    };
+    use dojo_shooter::systems::init::{Init};
     use dojo_shooter::utils::get_game_state;
 
     // Calculates slope from coordinates
@@ -23,14 +25,19 @@ mod Shoot {
 
     // use dojo_core::interfaces::{Context, IWorldDispatcherTrait};
     fn execute(ctx: Context, x: i33, y: i33) {
-
         match get_game_state(ctx) {
-            GameStates::Finished(()) => { Init::execute(ctx); return (); },
+            GameStates::Finished(()) => {
+                Init::execute(ctx);
+                return ();
+            },
             GameStates::Running(()) => {}
         }
 
         // slope of the bullet trajectory
         let shot_slope = slope(x.inner, y.inner);
+
+        'Shot slope:'.print();
+        shot_slope.print();
 
         let mut z_indx: usize = 0;
         let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
@@ -47,15 +54,23 @@ mod Shoot {
             // Le Zombie
             let mut z: Zombie = ZombieSerde::deserialize(ref z_pos_span).unwrap();
 
-            ///////// Calculate if the shot hit a zombie /////////
+            'Zombie'.print();
+            z_id.print();
+            // (shot_slope < max_slope).print();
+
+            ///////// Calculate if the shot hits the zombie /////////
             if z.x.sign == x.sign {
                 if z.y.sign == y.sign { // Zombie is in same quadrant as the shot
                     let (min_slope, max_slope) = zombie_slope_range(z.x, z.y);
 
+                    'Zombie in quad, slope range:'.print();
+                    min_slope.print();
+                    max_slope.print();
                     // compare the slope of zombie to the bullet trajectory
                     // range for whole hitbox
                     if shot_slope > min_slope {
                         if shot_slope < max_slope { // Shot is within zombie hitpoint slope
+                            '!!! Shot hits zombie'.print();
 
                             ctx.world.delete_entity(ctx, 'Zombie', z_id.into());
 
