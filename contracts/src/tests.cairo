@@ -5,7 +5,10 @@ use starknet::{get_caller_address, testing::set_caller_address};
 use dojo_core::auth::systems::{Route, RouteTrait};
 use dojo_core::interfaces::{IWorldDispatcherTrait, IWorldDispatcher};
 use dojo_core::test_utils::spawn_test_world;
-use dojo_shooter::components::{ScoreComponent, ZombieComponent, Zombie, zombie_speed, zombie_width, SystemFrameTickerComponent, SystemFrameTicker};
+use dojo_shooter::components::{
+    GameStateComponent, ScoreComponent, SystemFrameTickerComponent, ZombieComponent
+};
+use dojo_shooter::components::{Zombie, zombie_speed, zombie_width, SystemFrameTicker};
 use dojo_shooter::systems::{SpawnPlayer, SpawnDummyZombies, Update, Shoot};
 use debug::PrintTrait;
 
@@ -14,6 +17,7 @@ fn setup_world() -> IWorldDispatcher {
     // components
     let mut components = array::ArrayTrait::new();
     components.append(ScoreComponent::TEST_CLASS_HASH);
+    components.append(GameStateComponent::TEST_CLASS_HASH);
     components.append(ZombieComponent::TEST_CLASS_HASH);
     components.append(SystemFrameTickerComponent::TEST_CLASS_HASH);
     // systems
@@ -131,7 +135,7 @@ fn test_shoot() {
 #[available_gas(30000000000000)]
 fn test_spawn_ran_zombies() {
     let world = setup_world();
-    
+
     world.execute('SpawnPlayer', ArrayTrait::new().span());
     world.execute('SpawnDummyZombies', ArrayTrait::new().span());
 
@@ -142,13 +146,11 @@ fn test_spawn_ran_zombies() {
             break ();
         }
         num_updates += 1;
-
     };
 
     // We can check that two zombies with IDs factors of 11 have been spawned
     let zombie = world.entity('Zombie', 11.into(), 0, 0);
     assert(zombie.len() == 2, 'Zombie not Spawned');
-        let zombie = world.entity('Zombie', 22.into(), 0, 0);
+    let zombie = world.entity('Zombie', 22.into(), 0, 0);
     assert(zombie.len() == 2, 'Zombie not Spawned');
-
 }

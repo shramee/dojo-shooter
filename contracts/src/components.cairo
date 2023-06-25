@@ -121,37 +121,9 @@ struct Score {
 struct SystemFrameTicker {
     frames: u128, 
 }
-// @todo later
-// Keeps all time score
-// #[derive(Component, Copy, Drop, Serde)]
-// struct ScoreAllTime {
-//     kills: u32, 
-// }
 
-// region Not using polar coords for now
-// Quadrants
-// These are structured so that Zombies can be queried by quadrant
-// And shoot system can find the zombies shot
-// Based on the slope
-// #[derive(Component, Copy, Drop, Serde)]
-// struct QuadTL {
-//     x: u32, // Slope is one-ten thousandth    
-// }
-
-// #[derive(Component, Copy, Drop, Serde)]
-// struct QuadTR {
-//     x: u32, // Slope is one-ten thousandth    
-// }
-
-// #[derive(Component, Copy, Drop, Serde)]
-// struct QuadBR {
-//     x: u32, // Slope is one-ten thousandth    
-// }
-
-// #[derive(Component, Copy, Drop, Serde)]
-// struct QuadBL {
-//     x: u32, // Slope is one-ten thousandth    
-// }
-// endregion Not using polar coords for now
-
-
+#[derive(Component, Copy, Drop, Serde)]
+enum GameState {
+    Running: (),
+    Finished: (),
+}

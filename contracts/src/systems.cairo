@@ -51,15 +51,21 @@ mod Update {
     }
 
     fn spawn(ctx: Context) {
-
-        let frames: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0]).try_into().unwrap();
+        let frames: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0])
+            .try_into()
+            .unwrap();
         // 'CURRENT FRAME'.print();
         // frames.print();
-        let current_score: u32 = (*ctx.world.entity('Score', ctx.caller_account.into(), 0, 0)[0]).try_into().unwrap();
+        let current_score: u32 = (*ctx.world.entity('Score', ctx.caller_account.into(), 0, 0)[0])
+            .try_into()
+            .unwrap();
         if frames % 11 == 0 {
             'ENTERED SPAWN'.print();
             let randomness: u128 = ((frames + current_score.into()) / 11) % 8;
-            let conversion_felt: felt252 = ((frames + current_score.into()) % spawn_targets().len().into()).into();
+            let conversion_felt: felt252 = ((frames + current_score.into()) % spawn_targets()
+                .len()
+                .into())
+                .into();
             let spawn_target = spawn_targets()[conversion_felt.try_into().unwrap()];
 
             let mut z: Zombie = Zombie { x: new_i33(1000, false), y: new_i33(1000, false) };
@@ -81,12 +87,12 @@ mod Update {
                     z.x.sign = true;
                 } else if randomness == 6 {
                     z.y.sign = true;
-                }  else if randomness == 7 {
+                } else if randomness == 7 {
                     z.y.sign = true;
                     z.x.sign = true;
                 }
             }
-            
+
             'NEW Z X'.print();
             z.x.inner.print();
             'NEW X SIGN'.print();
@@ -95,7 +101,6 @@ mod Update {
             z.y.inner.print();
             'NEW Y SIGN'.print();
             z.y.sign.print();
-            
 
             let mut zombie_serialized: Array<felt252> = ArrayTrait::new();
             z.serialize(ref zombie_serialized);
@@ -157,7 +162,10 @@ mod Update {
 
     fn execute(ctx: Context, tasks: Tasks) {
         // increment current frame ticker by 1 and then update
-        let next_frame: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0]).try_into().unwrap() + 1;
+        let next_frame: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0])
+            .try_into()
+            .unwrap()
+            + 1;
         // 'NEXT FRAME'.print();
         // next_frame.print();
 
@@ -214,12 +222,12 @@ mod Shoot {
 
     // use dojo_core::interfaces::{Context, IWorldDispatcherTrait};
     fn execute(ctx: Context, x: i33, y: i33) {
-        let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
-
         // slope of the bullet trajectory
         let shot_slope = slope(x.inner, y.inner);
 
         let mut z_indx: usize = 0;
+        let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
+
         loop {
             if (zombie_entities.len() == z_indx) {
                 break ();
@@ -236,6 +244,7 @@ mod Shoot {
             if z.x.sign == x.sign {
                 if z.y.sign == y.sign { // Zombie is in same quadrant as the shot
                     let (min_slope, max_slope) = zombie_slope_range(z.x, z.y);
+
                     'Zombie'.print();
                     z_id.print();
                     min_slope.print();
@@ -243,6 +252,7 @@ mod Shoot {
                     shot_slope.print();
                     (shot_slope > min_slope).print();
                     (shot_slope < max_slope).print();
+
                     // compare the slope of zombie to the bullet trajectory
                     // range for whole hitbox
                     if shot_slope > min_slope {
