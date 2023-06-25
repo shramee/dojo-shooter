@@ -129,6 +129,6 @@ struct GameState {
 
 #[derive(Copy, Drop, Serde)]
 enum GameStates {
-    Running: (),
     Finished: (),
+    Running: ()
 }

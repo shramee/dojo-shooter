@@ -3,7 +3,9 @@ mod Shoot {
     use array::ArrayTrait;
     use traits::Into;
     use debug::PrintTrait;
-    use dojo_shooter::components::{Zombie, ZombieSerde, i33, I33Serde, zombie_width, Score, };
+    use dojo_shooter::components::{ Zombie, ZombieSerde, i33, I33Serde, zombie_width, Score, GameState, GameStates };
+    use dojo_shooter::systems::init::{ Init };
+    use dojo_shooter::utils::get_game_state;
 
     // Calculates slope from coordinates
     fn slope(x: u32, y: u32) -> u32 {
@@ -21,6 +23,12 @@ mod Shoot {
 
     // use dojo_core::interfaces::{Context, IWorldDispatcherTrait};
     fn execute(ctx: Context, x: i33, y: i33) {
+
+        match get_game_state(ctx) {
+            GameStates::Finished(()) => { Init::execute(ctx); return (); },
+            GameStates::Running(()) => {}
+        }
+
         // slope of the bullet trajectory
         let shot_slope = slope(x.inner, y.inner);
 
@@ -44,19 +52,10 @@ mod Shoot {
                 if z.y.sign == y.sign { // Zombie is in same quadrant as the shot
                     let (min_slope, max_slope) = zombie_slope_range(z.x, z.y);
 
-                    'Zombie'.print();
-                    z_id.print();
-                    min_slope.print();
-                    max_slope.print();
-                    shot_slope.print();
-                    (shot_slope > min_slope).print();
-                    (shot_slope < max_slope).print();
-
                     // compare the slope of zombie to the bullet trajectory
                     // range for whole hitbox
                     if shot_slope > min_slope {
                         if shot_slope < max_slope { // Shot is within zombie hitpoint slope
-                            'Zombie killed!'.print();
 
                             ctx.world.delete_entity(ctx, 'Zombie', z_id.into());
 

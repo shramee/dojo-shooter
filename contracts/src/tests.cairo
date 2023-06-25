@@ -9,7 +9,7 @@ use dojo_shooter::components::{
     GameStateComponent, ScoreComponent, SystemFrameTickerComponent, ZombieComponent
 };
 use dojo_shooter::components::{Zombie, zombie_speed, zombie_width, SystemFrameTicker};
-use dojo_shooter::systems::{SpawnPlayer, SpawnDummyZombies, Update, Shoot};
+use dojo_shooter::systems::{Init, SpawnDummyZombies, Update, Shoot};
 use debug::PrintTrait;
 
 fn setup_world() -> IWorldDispatcher {
@@ -22,7 +22,7 @@ fn setup_world() -> IWorldDispatcher {
     components.append(SystemFrameTickerComponent::TEST_CLASS_HASH);
     // systems
     let mut systems = array::ArrayTrait::new();
-    systems.append(SpawnPlayer::TEST_CLASS_HASH);
+    systems.append(Init::TEST_CLASS_HASH);
     systems.append(SpawnDummyZombies::TEST_CLASS_HASH);
     systems.append(Update::TEST_CLASS_HASH);
     systems.append(Shoot::TEST_CLASS_HASH);
@@ -33,7 +33,7 @@ fn setup_world() -> IWorldDispatcher {
     let world = spawn_test_world(components, systems, routes);
 
     let mut systems = array::ArrayTrait::new();
-    systems.append('SpawnPlayer');
+    systems.append('Init');
     systems.append('SpawnDummyZombies');
     systems.append('Update');
     systems.append('Shoot');
@@ -56,10 +56,10 @@ fn array_with_val(v: felt252) -> Array<felt252> {
 
 #[test]
 #[available_gas(30000000)]
-fn test_player_spawn() {
+fn test_game_init() {
     let world = setup_world();
 
-    world.execute('SpawnPlayer', ArrayTrait::new().span());
+    world.execute('Init', ArrayTrait::new().span());
 
     let score = world.entity('Score', 0.into(), 0, 0);
     assert(score.len() > 0, 'spawn: No data found');
@@ -84,8 +84,10 @@ fn test_dummy_zombie_update() {
     let world = setup_world();
 
     world.execute('SpawnDummyZombies', ArrayTrait::new().span());
+    // world.execute('Init', ArrayTrait::new().span());
 
     let zombie = world.entity('Zombie', 1.into(), 0, 0);
+    exec_shoot_system(world, *zombie[0] - zombie_width.into(), *zombie[1] + zombie_width.into());
 
     world.execute('Update', array_append(ArrayTrait::new(), 1).span());
 
@@ -106,7 +108,7 @@ fn exec_shoot_system(world: IWorldDispatcher, x: felt252, y: felt252) -> Span<fe
 fn test_shoot() {
     let world = setup_world();
 
-    world.execute('SpawnPlayer', ArrayTrait::new().span());
+    world.execute('Init', ArrayTrait::new().span());
     world.execute('SpawnDummyZombies', ArrayTrait::new().span());
 
     let score = world.entity('Score', get_caller_address().into(), 0, 0);
@@ -136,13 +138,13 @@ fn test_shoot() {
 fn test_spawn_ran_zombies() {
     let world = setup_world();
 
-    world.execute('SpawnPlayer', ArrayTrait::new().span());
+    world.execute('Init', ArrayTrait::new().span());
     world.execute('SpawnDummyZombies', ArrayTrait::new().span());
 
     let mut num_updates: u128 = 0;
     loop {
         world.execute('Update', array_append(ArrayTrait::new(), 2).span());
-        if num_updates == 100 {
+        if num_updates == 22 {
             break ();
         }
         num_updates += 1;
