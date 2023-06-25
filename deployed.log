@@ -4,19 +4,21 @@ Migration account: 0x6f62894bfd81d2e396ce266b2ad0f21e0668d604e5bb1077337b6d570a5
 [1] 🌎 Building World state....
   > No remote World found
 [2] 🧰 Evaluating Worlds diff....
-  > Total diffs found: 20
+  > Total diffs found: 21
 [3] 📦 Preparing for migration....
-  > Total items to be migrated (20): New 20 Update 0
+  > Total items to be migrated (21): New 21 Update 0
   
 # Executor
   > contract address: 0x13c7a36b4f70191f6f17b407fcd7cc1b5b7d6488e3677855c7c51852dbbda96
 # World
   > contract address: 0x7f1d6c1b15e03673062d8356dc1174d5d85c310479ec49fe781e8bf89e4c4f8
-# Components (4)
+# Components (5)
 Zombie
   > class hash: 0x61594146a2cfaf19727c6a98735831f6ce53b8f91fa470d28ced0822646941d
 Score
   > class hash: 0x783f191e4fb1fccef81d64469d5d1550b07888bc8d2dc915fc23da2406ac33a
+SystemFrameTicker
+  > class hash: 0x392005b685f3cd9f428e8a4d962fa0b41f08f5d1859eed0a4cf84cab79ed7e9
 AuthStatus
   > class hash: 0x3e0b3ffb3e7cd8a661a7ac6b935bad3de651462ea1fb005cd4fff6550ac5337
 AuthRole
@@ -25,11 +27,11 @@ AuthRole
 SpawnPlayer
   > class hash: 0x541a6323d95e4496354262e6f1b04d24e4f484f1a1f053cfc79613cb3fb14b5
 SpawnDummyZombies
-  > class hash: 0x3fceee9c449014de828b654f4bcc46296ca33ce35e3062ae04b99746abedee7
+  > class hash: 0xa9c0ff60fdb31aad82c8f9b7386963eba3bf2c433461d413b85b301db3c088
 Update
-  > class hash: 0x413d0ff2badff4c32184a75509bdec51e90717d75ad26cea8b41befef1d73df
+  > class hash: 0xcb06595935df945173df0c48986c717edd3b67ac5313dee968f7c998d6a102
 Shoot
-  > class hash: 0x686cf3265974a66c4fc24c6bc71d3ddbc97ff3654e77630f78357a569c14502
+  > class hash: 0x62d660b4ac843dfe42ace48640b301a60a6a4b086099b29ff0de0db343247ce
 RouteAuth
   > class hash: 0x328155f2126a5ddbfaeaadd84b0ae2aade22c8e764c981bdf66ed593b5f611c
 IsAccountAdmin

@@ -115,6 +115,13 @@ struct Zombie {
 struct Score {
     kills: u32, 
 }
+
+// Keeps how many frames have passed
+#[derive(Component, Copy, Drop, Serde)]
+struct SystemFrameTicker {
+    frames: u128, 
+}
+
 // @todo later
 // Keeps all time score
 // #[derive(Component, Copy, Drop, Serde)]

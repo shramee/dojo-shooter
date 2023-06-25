@@ -26,10 +26,11 @@ mod SpawnPlayer {
 // ]
 
 #[system]
+// TODO: rename, doing more than spawn dummy zombies
 mod SpawnDummyZombies {
     use array::ArrayTrait;
     use traits::Into;
-    use dojo_shooter::components::{Zombie, new_i33};
+    use dojo_shooter::components::{Zombie, new_i33, SystemFrameTicker};
 
     fn execute(ctx: Context) {
         // Spawn zombies
@@ -37,16 +38,20 @@ mod SpawnDummyZombies {
         commands::set_entity(2.into(), (Zombie { x: new_i33(700, true), y: new_i33(800, false) }));
         commands::set_entity(3.into(), (Zombie { x: new_i33(400, false), y: new_i33(350, false) }));
         commands::set_entity(4.into(), (Zombie { x: new_i33(750, true), y: new_i33(900, true) }));
+
+        // Initialize frame count to 4 to avoid entity id clashes later with above zombies (first update will increment next frame to 5 before spawning)
+        commands::set_entity('ticker'.into(), (SystemFrameTicker { frames: 4 }));
     }
 }
 
 #[system]
 mod Update {
     use array::ArrayTrait;
-    use traits::Into;
-    use dojo_shooter::components::{Zombie, zombie_speed, ZombieSerde};
+    use traits::{Into, TryInto};
+    use dojo_shooter::components::{Zombie, zombie_speed, ZombieSerde, Score, SystemFrameTicker, spawn_targets, new_i33};
     use serde::Serde;
     use debug::PrintTrait;
+
     // use dojo_core::interfaces::{Context, IWorldDispatcherTrait};
 
     #[derive(Copy, Drop, Serde)]
@@ -56,7 +61,39 @@ mod Update {
         spawn: (),
     }
 
-    fn spawn(ctx: Context) {}
+    fn spawn(ctx: Context) {
+        let frames: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0]).try_into().unwrap();
+        'CURRENT FRAME'.print();
+        frames.print();
+        let current_score: u32 = (*ctx.world.entity('Score', ctx.caller_account.into(), 0, 0)[0]).try_into().unwrap();
+        if frames % 11 == 0 {
+            'ENTERED SPAWN'.print();
+            let is_x_ran: bool = ( (frames + current_score.into() % 2 == 0) );
+            let conversion_felt: felt252 = ((frames + current_score.into()) % spawn_targets().len().into()).into();
+            let spawn_target = spawn_targets()[conversion_felt.try_into().unwrap()];
+
+            let mut z: Zombie = Zombie { x: new_i33(1000, false), y: new_i33(1000, false) };
+            if is_x_ran {
+                z.x.inner = *spawn_target;
+            } else {
+                z.y.inner = *spawn_target;
+            }
+
+            let mut zombie_serialized: Array<felt252> = ArrayTrait::new();
+            z.serialize(ref zombie_serialized);
+            
+            ctx
+            .world
+            .set_entity(
+                ctx,
+                'Zombie'.into(),
+                QueryTrait::new_from_id(frames.into()),
+                0,
+                zombie_serialized.span()
+                );
+
+        }
+    }
 
     fn update(ctx: Context) {
         let (zombie_entities, entities_data) = ctx.world.entities('Zombie', 0);
@@ -101,7 +138,26 @@ mod Update {
         };
     }
 
-    fn execute(ctx: Context, tasks: Tasks) { // Make zombies move towards the center
+    fn execute(ctx: Context, tasks: Tasks) {        
+        // increment current frame ticker by 1 and then update
+        let next_frame: u128 = (*ctx.world.entity('SystemFrameTicker', 'ticker'.into(), 0, 0)[0]).try_into().unwrap() + 1;
+        'NEXT FRAME'.print();
+        next_frame.print();
+        let mut ticker: SystemFrameTicker = SystemFrameTicker { frames: next_frame };
+        
+        let mut ticker_serialized: Array<felt252> = ArrayTrait::new();
+        ticker.serialize(ref ticker_serialized);
+
+        ctx
+        .world
+        .set_entity(
+            ctx,
+            'SystemFrameTicker'.into(),
+            QueryTrait::new_from_id('ticker'.into()),
+            0,
+            ticker_serialized.span()
+        );
+
         match tasks {
             Tasks::all(_) => {
                 update(ctx);
