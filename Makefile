@@ -20,7 +20,6 @@ deploy:
 # Usage: make ecs_exe s=Spawn
 ecs_exe:
 	@WORLD_ADDR=$$(tail -n1 ./last_deployed_world); \
-	@WORLD_ADDR=$$(tail -n1 ./last_deployed_world); \
 	cd contracts; echo "sozo execute $(s) --world $$WORLD_ADDR"; \
 	sozo execute $(s) --world $$WORLD_ADDR
 
