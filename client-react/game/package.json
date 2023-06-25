@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dojoengine/core": "../dojo/core",
+    "@dojoengine/react": "../dojo/react",
     "@latticexyz/recs": "^1.43.0",
     "@latticexyz/utils": "^1.43.0",
     "ethers": "^5.7.2",
